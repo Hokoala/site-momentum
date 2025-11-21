@@ -8,7 +8,7 @@ export default function Home() {
                 <PixelBlast
                     variant="circle"
                     pixelSize={6}
-                    color="#B19EEF"
+                    color="#C0FE04"
                     patternScale={3}
                     patternDensity={1.2}
                     pixelSizeJitter={0.5}
