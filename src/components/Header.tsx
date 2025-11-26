@@ -31,6 +31,7 @@ export default function Header() {
                         alt="Momentum Logo"
                         width={32}
                         height={32}
+                        priority
                         className="w-10 h-auto"
                     />
                 </Link>
