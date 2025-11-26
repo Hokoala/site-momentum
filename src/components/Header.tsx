@@ -1,23 +1,18 @@
 "use client";
 
 import Link from 'next/link';
-import { Menu, MousePointerClick } from 'lucide-react';
+import Image from 'next/image';
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import {
-    Sheet,
-    SheetContent,
-    SheetDescription,
-    SheetHeader,
-    SheetTitle,
-    SheetTrigger,
-} from '@/components/ui/sheet';
-import { Separator } from '@/components/ui/separator';
 
 const menuItems = [
     {
         label: 'Accueil',
         href: '/',
+        description: 'Retour à la page principale',
+    },
+    {
+        label: 'Présentation',
+        href: '#presentation',
         description: 'Retour à la page principale',
     }
 ];
@@ -28,83 +23,36 @@ export default function Header() {
     const closeMenu = () => setIsOpen(false);
 
     return (
-        <header className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-sm border-b border-white/10">
-            <div className="flex justify-between items-center p-4">
-                {/* Logo */}
-                <Link href="/" className="flex items-center gap-2">
-                    <div className="bg-primary p-1 rounded-md">
-                        <MousePointerClick className="w-4 h-4 text-primary-foreground" />
-                    </div>
-                    <span className="text-md font-light text-white">LOGO</span>
+        <header className="w-full px-4 py-2 bg-black/70 backdrop-blur-md fixed top-0 z-50">
+            <div className="max-w-7xl mx-auto flex items-center justify-between">
+                <Link href="/" className="text-white text-lg font-bold">
+                    <Image
+                        src="/assets/logo-momentum.svg"
+                        alt="Momentum Logo"
+                        width={32}
+                        height={32}
+                        className="w-10 h-auto"
+                    />
                 </Link>
 
-                {/* Navigation Desktop */}
-                <div className="hidden md:flex flex-1 px-8 items-center gap-6">
-                    <Link
-                        href="#Info"
-                        className="text-xs font-light hover:border-b hover:border-b-primary uppercase text-white/70 hover:text-white transition-colors"
-                    />
+                {/* Navigation au milieu */}
+                <nav className="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-8">
+                    {menuItems.map((item) => (
+                        <Link
+                            key={item.href}
+                            href={item.href}
+                            className="text-white hover:text-lime-400 transition-colors"
+                        >
+                            {item.label}
+                        </Link>
+                    ))}
+                </nav>
 
-                </div>
 
-
-
-                {/* Menu Mobile avec Sheet */}
-                <div className="md:hidden flex items-center gap-2">
-                    <Sheet open={isOpen} onOpenChange={setIsOpen}>
-                        <SheetTrigger asChild>
-                            <Button
-                                variant="ghost"
-                                size="sm"
-                                aria-label="Menu"
-                                className="border-border"
-                            >
-                                <Menu size={24} strokeWidth={1.5} />
-                            </Button>
-                        </SheetTrigger>
-                        <SheetContent side="right" className="w-80">
-                            <SheetHeader>
-                                <SheetTitle className="flex items-center gap-2">
-                                    <div className="bg-primary p-1 rounded-md">
-                                        <MousePointerClick className="w-4 h-4 text-primary-foreground" />
-                                    </div>
-                                    <span className="text-lg font-light">Aif-f Studios.</span>
-                                </SheetTitle>
-                                <SheetDescription>Navigation du projet</SheetDescription>
-                            </SheetHeader>
-
-                            <Separator className="my-4" />
-
-                            {/* Menu Items */}
-                            <nav className="flex flex-col">
-                                {menuItems.map((item) => (
-                                    <Link
-                                        key={item.href}
-                                        href={item.href}
-                                        className="group block py-2 px-4 hover:bg-muted transition-colors rounded-md"
-                                        onClick={closeMenu}
-                                    >
-                                        <div className="text-sm font-medium group-hover:text-primary transition-colors">
-                                            {item.label}
-                                        </div>
-                                        <div className="text-xs text-muted-foreground mt-1">
-                                            {item.description}
-                                        </div>
-                                    </Link>
-                                ))}
-                            </nav>
-
-                            {/* Footer */}
-                            <div className="absolute bottom-6 left-6 right-6">
-                                <Separator className="mb-4" />
-                                <p className="text-xs text-muted-foreground text-center">
-                                    © 2025 Aif-f Studios
-                                </p>
-                            </div>
-                        </SheetContent>
-                    </Sheet>
-                </div>
+                {/* Espace vide à droite */}
+                <div className="w-20"></div>
             </div>
         </header>
     );
+
 }
