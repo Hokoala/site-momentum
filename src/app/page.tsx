@@ -76,7 +76,8 @@ export default function Home() {
           <img
             src="https://s6.imgcdn.dev/YKoRmh.jpg"
             alt="Gameplay Momentum"
-            priority
+            width="400"
+            height="300"
             className="w-80 md:w-96 lg:w-[400px]  border-3 p-2 border-lime-400"
           />
         </div>
@@ -96,7 +97,8 @@ export default function Home() {
               <img
                 src="https://s6.imgcdn.dev/YKoRmh.jpg"
                 alt="Gameplay Momentum 1"
-                priority
+                width="600"
+                height="450"
                 className="w-full h-auto"
               />
             </div>
@@ -104,7 +106,8 @@ export default function Home() {
               <img
                 src="https://s6.imgcdn.dev/YKoRmh.jpg"
                 alt="Gameplay Momentum 2"
-                priority
+                width="600"
+                height="450"
                 className="w-full h-auto"
               />
             </div>
