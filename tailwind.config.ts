@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  darkMode: ["class"],
+  darkMode: "class",
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -10,9 +10,7 @@ const config: Config = {
   theme: {
     extend: {
         fontFamily: {
-            interference: ['KHInterferenceTRIAL-Regular', 'sans-serif'],
-            'interference-light': ['KHInterferenceTRIAL-Light', 'sans-serif'],
-            'interference-bold': ['KHInterferenceTRIAL-Bold', 'sans-serif'],
+            interference: ['KHInterference', 'sans-serif'],
         },
     },
   },

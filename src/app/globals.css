@@ -1,6 +1,42 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* Lenis Smooth Scroll */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* Animation Marquee */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-33.333%);
+  }
+}
+
+.animate-marquee {
+  display: inline-block;
+  animation: marquee 20s linear infinite;
+}
 
 @custom-variant dark (&:is(.dark *));
 
@@ -119,26 +155,14 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'KHInterference', sans-serif;
   }
 }
 
 @font-face {
-    font-family: 'KHInterferenceTRIAL-Regular';
-    src: url('/fonts/KHInterferenceTRIAL-Regular.woff2') format('woff2');
+    font-family: 'KHInterference';
+    src: url('/assets/fonts/KHInterference-Regular.otf') format('opentype');
     font-weight: 400;
     font-style: normal;
-}
-
-@font-face {
-    font-family: 'KHInterferenceTRIAL-Light';
-    src: url('/fonts/KHInterferenceTRIAL-Light.woff2') format('woff2');
-    font-weight: 300;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'KHInterferenceTRIAL-Bold';
-    src: url('/fonts/KHInterferenceTRIAL-Bold.woff2') format('woff2');
-    font-weight: 700;
-    font-style: normal;
+    font-display: swap;
 }
