@@ -10,9 +10,7 @@ const config: Config = {
   theme: {
     extend: {
         fontFamily: {
-            interference: ['KHInterferenceTRIAL-Regular', 'sans-serif'],
-            'interference-light': ['KHInterferenceTRIAL-Light', 'sans-serif'],
-            'interference-bold': ['KHInterferenceTRIAL-Bold', 'sans-serif'],
+            interference: ['KHInterference', 'sans-serif'],
         },
     },
   },
