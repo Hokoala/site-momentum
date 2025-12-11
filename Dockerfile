@@ -29,7 +29,6 @@ RUN npm rebuild better-sqlite3 --release
 COPY . .
 
 # 7. Lancer 'nuxt prepare' MANUELLEMENT (maintenant oxc-parser est là)
-RUN npx nuxt prepare
 
 # 8. Construire l'application (maintenant better_sqlite3.node est là)
 RUN npm run build
