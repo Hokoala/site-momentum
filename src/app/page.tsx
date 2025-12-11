@@ -6,7 +6,7 @@ import PixelBlast from "@/components/PixelBlast";
 import Loading from "@/components/Loading";
 import HeroTitre from "@/components/Hero-Titre";
 import ScrollReveal from "@/components/ScrollReveal";
-import Button from "@/components/Button-savoir";
+import Button from "@/components/ButtonSavoir";
 import AnimationImage from "@/components/animation-image";
 
 export default function Home() {

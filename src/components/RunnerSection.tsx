@@ -1,6 +1,6 @@
 "use client";
 
-import ButtonSavoir from './button-savoir';
+import ButtonSavoir from '@/components/ButtonSavoir';
 
 export default function RunnerSection() {
   return (
