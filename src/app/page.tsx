@@ -4,10 +4,10 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import PixelBlast from "@/components/PixelBlast";
 import Loading from "@/components/Loading";
-import HeroTitre from "@/components/Hero-Titre";
-import ScrollReveal from "@/components/ScrollReveal";
+import HeroTitre from "@/components/HeroTitre";
 import Button from "@/components/ButtonSavoir";
-import AnimationImage from "@/components/animation-image";
+import ScrollReveal from "@/components/ScrollReveal";
+import AnimationImage from "@/components/AnimationImage";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
@@ -49,12 +49,13 @@ export default function Home() {
       </section>
 
       <section
-        className="relative w-full min-h-screen flex items-center bg-black px-3 md:px-3 lg:px-9"
+        className="relative w-full min-h-screen flex flex-col lg:flex-row lg:items-center bg-black px-4 sm:px-6 md:px-8 lg:px-12 py-10 lg:py-0"
         id="presentation"
       >
-        <div className="max-w-3xl h-full">
+        {/* Contenu texte */}
+        <div className="w-full lg:max-w-3xl z-10">
           {/* Titre principal */}
-          <h2 className="text-4xl md:text-9xl text-white leading-none py-20">
+          <h2 className="text-3xl sm:text-5xl md:text-7xl lg:text-9xl text-white leading-none py-10 md:py-16 lg:py-20">
             Description du jeu
           </h2>
 
@@ -64,9 +65,8 @@ export default function Home() {
             enableBlur={true}
             baseRotation={0}
             blurStrength={5}
-            textClassName="text-white text-xs max-w-xl py-20"
-            rotationEnd="center center"
-            wordAnimationEnd="center center"
+            textClassName="text-white text-xs sm:text-sm max-w-xl py-10 md:py-16 lg:py-20"
+
           >
             Affrontez votre rival dans une course effrénée où lumière et ténèbres
             s'affrontent ! Momentum est un parkour compétitif explosif pour 2
@@ -77,13 +77,13 @@ export default function Home() {
           </ScrollReveal>
 
           {/* Carte d'appel à l'action */}
-          <div className="relative bg-[#C0FE04] p-6 md:p-5 pb-20 md:pb-24 w-fit max-w-xl">
-            <h2 className="text-lg md:text-XL font-bold uppercase leading-tight text-black">
+          <div className="relative bg-[#C0FE04] p-4 sm:p-5 md:p-6 pb-16 sm:pb-20 md:pb-24 w-full sm:w-fit max-w-xl">
+            <h2 className="text-base sm:text-lg md:text-xl font-bold uppercase leading-tight text-black">
               Laissez votre corps périr <br />
               Devenez un coureur
             </h2>
 
-            <p className="mt-4 text-xs md:text-xs uppercase tracking-wide text-black leading-relaxed">
+            <p className="mt-3 sm:mt-4 text-xs uppercase tracking-wide text-black leading-relaxed">
               Maîtrisez les mécaniques jour/nuit, adaptez votre stratégie en temps
               réel, utilisez intelligemment votre onde lumineuse et prenez
               l'avantage sur votre rival.
@@ -96,14 +96,26 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Image positionnée à droite du viewport */}
-        <div className="absolute right-8 bottom-0 md:right-16 md:bottom-0 pointer-events-none">
+        {/* Image - cachée sur mobile, visible sur tablette+ */}
+        <div className="hidden md:block absolute right-4 bottom-10 lg:right-16 lg:bottom-0 pointer-events-none">
           <Image
             src="/assets/test1.png"
             alt="Gameplay de Momentum montrant un coureur en action"
             width={700}
             height={700}
-            className="w-80 md:w-[700px] h-auto"
+            className="w-64 lg:w-[500px] xl:w-[700px] h-auto opacity-80 lg:opacity-100"
+            priority
+          />
+        </div>
+
+        {/* Image mobile - affichée uniquement sur mobile */}
+        <div className="md:hidden w-full flex justify-center mt-10">
+          <Image
+            src="/assets/test1.png"
+            alt="Gameplay de Momentum montrant un coureur en action"
+            width={400}
+            height={400}
+            className="w-64 sm:w-80 h-auto"
             priority
           />
         </div>
