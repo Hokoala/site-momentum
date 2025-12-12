@@ -4,9 +4,9 @@ import Link from 'next/link';
 
 const menuItems = [
     { label: 'HOME', href: '/' },
-    { label: 'DESCRIPTION', href: '#description' },
-    { label: 'ÉQUIPES', href: '#equipes' },
-    { label: 'LANGUAGE', href: '#language' }
+    { label: 'DESCRIPTION', href: '#Description' },
+    { label: 'Creators', href: '#Creators' },
+    { label: 'Scores', href: '#Scores' }
 ];
 
 export default function Footer() {
@@ -25,7 +25,7 @@ export default function Footer() {
                     <div className="px-6 md:px-12 border-b-2 lg:border-r-2 border-white">
                         <p className="text-xs md:text-sm py-3.5">
                             UN PROJET IMAGINÉ ET DÉVELOPPÉ PAR<br />
-                            L&apos;AGENCE AIF-F STUDIOS.
+                            L'AGENCE AIF-F STUDIOS.
                         </p>
                     </div>
 

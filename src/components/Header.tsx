@@ -13,28 +13,21 @@ const menuItems = [
         href: '#Description',
     },
     {
-        label: 'CRÉATEURS',
-        href: '#presentation',
+        label: 'Creators',
+        href: '#Creators',
     },
     {
         label: 'SCORES',
-        href: '#scores',
+        href: '#Scores',
     }
 ];
 
-const languages = [
-    { code: 'fr', label: 'FRANÇAIS' },
-    { code: 'en', label: 'ENGLISH' }
-];
-
 export default function Header() {
-    const [selectedLanguage, setSelectedLanguage] = useState(languages[0]);
-    const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     return (
         <header className="w-full bg-black top-0 z-50 border-b-2 border-white">
-            <div className="w-full px-4 md:px-6 py-3 md:py-0 flex items-center justify-between">
+            <div className="w-full px-4 md:px-1 py-3 md:py-0 flex items-center justify-between">
                 {/* Logo */}
                 <Link
                     href="/"
@@ -79,50 +72,6 @@ export default function Header() {
                             {item.label}
                         </Link>
                     ))}
-
-                    {/* Sélecteur de langue */}
-                    <div className="relative">
-                        <button
-                            onClick={() => setIsLanguageMenuOpen(!isLanguageMenuOpen)}
-                            className="text-white text-sm font-medium tracking-wider hover:text-[#C0FE04] transition-colors duration-300 flex items-center gap-2"
-                        >
-                            <span>{selectedLanguage.label}</span>
-                            <span className="text-[#C0FE04]">[</span>
-                            <svg
-                                className={`w-3 h-3 transition-transform duration-300 ${isLanguageMenuOpen ? 'rotate-180' : ''}`}
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                            </svg>
-                            <span className="text-[#C0FE04]">]</span>
-                        </button>
-
-                        {/* Menu déroulant langue */}
-                        <div
-                            className={`absolute top-full mt-2 right-0 bg-black border-2 border-[#C0FE04] min-w-[150px] transition-all duration-300 origin-top ${
-                                isLanguageMenuOpen
-                                    ? 'opacity-100 scale-y-100 translate-y-0'
-                                    : 'opacity-0 scale-y-0 -translate-y-2 pointer-events-none'
-                            }`}
-                        >
-                            {languages.map((lang) => (
-                                <button
-                                    key={lang.code}
-                                    onClick={() => {
-                                        setSelectedLanguage(lang);
-                                        setIsLanguageMenuOpen(false);
-                                    }}
-                                    className={`w-full px-4 py-3 text-left text-sm font-medium tracking-wider transition-all duration-200 hover:bg-[#C0FE04] hover:text-black ${
-                                        selectedLanguage.code === lang.code ? 'bg-[#C0FE04] text-black' : 'text-white'
-                                    }`}
-                                >
-                                    {lang.label}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
                 </nav>
 
                 {/* Bouton Jouer - desktop */}
