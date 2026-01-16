@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -6,117 +7,83 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "Content-Type",
 };
 
-// Interface pour typer les scores
-interface ScoreEntry {
-  playerName: string;
-  playerID: number;
-  mapName: string;
-  totalScore: number;
-  distanceTraveled: number;
-  survivalTime: number;
-  collectiblesCollected: number;
-  hasFinished: boolean;
-  timestamp: string;
+/**
+ * GET /api/scores - Récupère les scores depuis la base de données
+ * Query params:
+ *   - mapName: filtre par nom de carte
+ *   - limit: nombre max de scores à retourner (défaut: 10)
+ *   - sessionId: filtre par session de jeu
+ */
+export async function GET(request: NextRequest) {
+  try {
+    const searchParams = request.nextUrl.searchParams;
+    const mapName = searchParams.get("mapName");
+    const sessionId = searchParams.get("sessionId");
+    const limit = parseInt(searchParams.get("limit") || "10");
+
+    // Construire le filtre
+    const where: {
+      gameSession?: {
+        mapName?: string;
+        sessionId?: string;
+      };
+    } = {};
+
+    if (mapName || sessionId) {
+      where.gameSession = {};
+      if (mapName) where.gameSession.mapName = mapName;
+      if (sessionId) where.gameSession.sessionId = sessionId;
+    }
+
+    // Récupérer les scores triés par score décroissant
+    const scores = await prisma.score.findMany({
+      where,
+      orderBy: { totalScore: "desc" },
+      take: limit,
+      include: {
+        gameSession: {
+          select: {
+            sessionId: true,
+            mapName: true,
+            finishedAt: true,
+          },
+        },
+      },
+    });
+
+    const total = await prisma.score.count({ where });
+
+    return NextResponse.json(
+      {
+        success: true,
+        scores: scores.map((s, index) => ({
+          rank: index + 1,
+          playerName: s.playerName,
+          playerNumber: s.playerNumber,
+          totalScore: s.totalScore,
+          distanceTraveled: s.distanceTraveled,
+          survivalTime: s.survivalTime,
+          collectiblesCollected: s.collectiblesCollected,
+          hasFinished: s.hasFinished,
+          mapName: s.gameSession.mapName,
+          timestamp: s.createdAt.toISOString(),
+        })),
+        total,
+      },
+      { headers: corsHeaders }
+    );
+  } catch (error) {
+    console.error("Erreur récupération scores:", error);
+    return NextResponse.json(
+      { success: false, error: "Erreur serveur" },
+      { status: 500, headers: corsHeaders }
+    );
+  }
 }
 
-// Stockage en mémoire des scores avec des données fictives pour tester
-// IMPORTANT: Pour la production, remplace ça par une vraie base de données (Prisma, MongoDB, etc.)
-const scores: ScoreEntry[] = [
-  {
-    playerName: "NeonRider",
-    playerID: 101,
-    mapName: "Cyber City",
-    totalScore: 154200,
-    distanceTraveled: 5400,
-    survivalTime: 320,
-    collectiblesCollected: 45,
-    hasFinished: true,
-    timestamp: new Date().toISOString(),
-  },
-  {
-    playerName: "GlitchMaster",
-    playerID: 102,
-    mapName: "Cyber City",
-    totalScore: 142500,
-    distanceTraveled: 5100,
-    survivalTime: 300,
-    collectiblesCollected: 40,
-    hasFinished: true,
-    timestamp: new Date().toISOString(),
-  },
-  {
-    playerName: "SpeedDemon",
-    playerID: 103,
-    mapName: "Cyber City",
-    totalScore: 128900,
-    distanceTraveled: 4800,
-    survivalTime: 280,
-    collectiblesCollected: 35,
-    hasFinished: false,
-    timestamp: new Date().toISOString(),
-  },
-  {
-    playerName: "PixelHunter",
-    playerID: 104,
-    mapName: "Cyber City",
-    totalScore: 115600,
-    distanceTraveled: 4200,
-    survivalTime: 250,
-    collectiblesCollected: 30,
-    hasFinished: false,
-    timestamp: new Date().toISOString(),
-  },
-  {
-    playerName: "CyberPunk",
-    playerID: 105,
-    mapName: "Cyber City",
-    totalScore: 98400,
-    distanceTraveled: 3500,
-    survivalTime: 200,
-    collectiblesCollected: 25,
-    hasFinished: false,
-    timestamp: new Date().toISOString(),
-  },
-  {
-    playerName: "WastelandKing",
-    playerID: 201,
-    mapName: "Wasteland",
-    totalScore: 135000,
-    distanceTraveled: 5000,
-    survivalTime: 310,
-    collectiblesCollected: 38,
-    hasFinished: true,
-    timestamp: new Date().toISOString(),
-  },
-  {
-    playerName: "DustRunner",
-    playerID: 202,
-    mapName: "Wasteland",
-    totalScore: 122000,
-    distanceTraveled: 4600,
-    survivalTime: 290,
-    collectiblesCollected: 32,
-    hasFinished: false,
-    timestamp: new Date().toISOString(),
-  },
-  {
-    playerName: "SpaceAce",
-    playerID: 301,
-    mapName: "Space Station",
-    totalScore: 160000,
-    distanceTraveled: 6000,
-    survivalTime: 350,
-    collectiblesCollected: 50,
-    hasFinished: true,
-    timestamp: new Date().toISOString(),
-  },
-];
-
-// Trie initial des scores
-scores.sort((a, b) => b.totalScore - a.totalScore);
-
 /**
- * POST /api/scores - Sauvegarde un nouveau score
+ * POST /api/scores - Sauvegarde un score directement (sans session de jeu)
+ * Utile pour les tests ou les parties solo
  */
 export async function POST(request: NextRequest) {
   try {
@@ -131,38 +98,58 @@ export async function POST(request: NextRequest) {
     // Validation des données
     if (!data.playerName || data.totalScore === undefined) {
       return NextResponse.json(
-        { success: false, error: "Données invalides" },
+        { success: false, error: "playerName et totalScore requis" },
         { status: 400, headers: corsHeaders }
       );
     }
 
-    // Crée l'entrée de score avec timestamp
-    const scoreEntry: ScoreEntry = {
-      playerName: data.playerName,
-      playerID: data.playerID,
-      mapName: data.mapName,
-      totalScore: data.totalScore,
-      distanceTraveled: data.distanceTraveled,
-      survivalTime: data.survivalTime,
-      collectiblesCollected: data.collectiblesCollected,
-      hasFinished: data.hasFinished,
-      timestamp: new Date().toISOString(),
-    };
+    // Créer une session temporaire pour ce score
+    const tempSession = await prisma.gameSession.create({
+      data: {
+        sessionId: `solo_${Date.now()}_${Math.random().toString(36).slice(2)}`,
+        player1Token: "solo",
+        player2Token: "solo",
+        player1Pseudo: data.playerName,
+        player1Joined: true,
+        player2Joined: false,
+        status: "finished",
+        mapName: data.mapName || "default",
+        startedAt: new Date(),
+        finishedAt: new Date(),
+        expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
+      },
+    });
 
-    // Ajoute le score
-    scores.push(scoreEntry);
+    // Créer le score
+    const score = await prisma.score.create({
+      data: {
+        playerName: data.playerName,
+        playerNumber: 1,
+        totalScore: data.totalScore,
+        distanceTraveled: data.distanceTraveled || 0,
+        survivalTime: data.survivalTime || 0,
+        collectiblesCollected: data.collectiblesCollected || 0,
+        hasFinished: data.hasFinished || false,
+        gameSessionId: tempSession.id,
+      },
+    });
 
-    // Trie les scores par ordre décroissant (meilleur score en premier)
-    scores.sort((a, b) => b.totalScore - a.totalScore);
+    // Calculer le rang
+    const betterScores = await prisma.score.count({
+      where: { totalScore: { gt: score.totalScore } },
+    });
+    const rank = betterScores + 1;
 
-    console.log(`✅ Score sauvegardé! Total scores: ${scores.length}`);
+    const totalScores = await prisma.score.count();
+
+    console.log(`✅ Score sauvegardé! Rang: ${rank}/${totalScores}`);
 
     return NextResponse.json(
       {
         success: true,
         message: "Score sauvegardé avec succès",
-        rank: scores.findIndex((s) => s === scoreEntry) + 1,
-        totalScores: scores.length,
+        rank,
+        totalScores,
       },
       { headers: corsHeaders }
     );
@@ -173,37 +160,6 @@ export async function POST(request: NextRequest) {
       { status: 500, headers: corsHeaders }
     );
   }
-}
-
-/**
- * GET /api/scores - Récupère les scores
- * Query params:
- *   - mapName: filtre par nom de carte
- *   - limit: nombre max de scores à retourner (défaut: 10)
- */
-export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const mapName = searchParams.get("mapName");
-  const limit = parseInt(searchParams.get("limit") || "10");
-
-  let filteredScores = scores;
-
-  // Filtre par carte si spécifié
-  if (mapName) {
-    filteredScores = scores.filter((s) => s.mapName === mapName);
-  }
-
-  // Limite le nombre de résultats
-  const limitedScores = filteredScores.slice(0, limit);
-
-  return NextResponse.json(
-    {
-      success: true,
-      scores: limitedScores,
-      total: filteredScores.length,
-    },
-    { headers: corsHeaders }
-  );
 }
 
 /**
