@@ -19,9 +19,101 @@ interface ScoreEntry {
   timestamp: string;
 }
 
-// Stockage en mémoire des scores
+// Stockage en mémoire des scores avec des données fictives pour tester
 // IMPORTANT: Pour la production, remplace ça par une vraie base de données (Prisma, MongoDB, etc.)
-const scores: ScoreEntry[] = [];
+const scores: ScoreEntry[] = [
+  {
+    playerName: "NeonRider",
+    playerID: 101,
+    mapName: "Cyber City",
+    totalScore: 154200,
+    distanceTraveled: 5400,
+    survivalTime: 320,
+    collectiblesCollected: 45,
+    hasFinished: true,
+    timestamp: new Date().toISOString(),
+  },
+  {
+    playerName: "GlitchMaster",
+    playerID: 102,
+    mapName: "Cyber City",
+    totalScore: 142500,
+    distanceTraveled: 5100,
+    survivalTime: 300,
+    collectiblesCollected: 40,
+    hasFinished: true,
+    timestamp: new Date().toISOString(),
+  },
+  {
+    playerName: "SpeedDemon",
+    playerID: 103,
+    mapName: "Cyber City",
+    totalScore: 128900,
+    distanceTraveled: 4800,
+    survivalTime: 280,
+    collectiblesCollected: 35,
+    hasFinished: false,
+    timestamp: new Date().toISOString(),
+  },
+  {
+    playerName: "PixelHunter",
+    playerID: 104,
+    mapName: "Cyber City",
+    totalScore: 115600,
+    distanceTraveled: 4200,
+    survivalTime: 250,
+    collectiblesCollected: 30,
+    hasFinished: false,
+    timestamp: new Date().toISOString(),
+  },
+  {
+    playerName: "CyberPunk",
+    playerID: 105,
+    mapName: "Cyber City",
+    totalScore: 98400,
+    distanceTraveled: 3500,
+    survivalTime: 200,
+    collectiblesCollected: 25,
+    hasFinished: false,
+    timestamp: new Date().toISOString(),
+  },
+  {
+    playerName: "WastelandKing",
+    playerID: 201,
+    mapName: "Wasteland",
+    totalScore: 135000,
+    distanceTraveled: 5000,
+    survivalTime: 310,
+    collectiblesCollected: 38,
+    hasFinished: true,
+    timestamp: new Date().toISOString(),
+  },
+  {
+    playerName: "DustRunner",
+    playerID: 202,
+    mapName: "Wasteland",
+    totalScore: 122000,
+    distanceTraveled: 4600,
+    survivalTime: 290,
+    collectiblesCollected: 32,
+    hasFinished: false,
+    timestamp: new Date().toISOString(),
+  },
+  {
+    playerName: "SpaceAce",
+    playerID: 301,
+    mapName: "Space Station",
+    totalScore: 160000,
+    distanceTraveled: 6000,
+    survivalTime: 350,
+    collectiblesCollected: 50,
+    hasFinished: true,
+    timestamp: new Date().toISOString(),
+  },
+];
+
+// Trie initial des scores
+scores.sort((a, b) => b.totalScore - a.totalScore);
 
 /**
  * POST /api/scores - Sauvegarde un nouveau score
