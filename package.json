@@ -26,8 +26,9 @@
     "lucide-react": "^0.554.0",
     "motion": "^12.23.24",
     "mysql2": "^3.15.3",
-    "next": "15.5.7",
+    "next": "^15.5.9",
     "postprocessing": "^6.38.0",
+    "qrcode": "^1.5.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "tailwind-merge": "^3.4.0",
@@ -36,6 +37,7 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/qrcode": "^1.5.6",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "dotenv": "^17.2.3",
