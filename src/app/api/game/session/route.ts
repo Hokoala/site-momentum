@@ -1,5 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { randomBytes } from "crypto";
+import { createGameSession } from "@/lib/game-sessions";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -7,29 +8,7 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "Content-Type, Authorization",
 };
 
-// Stockage temporaire en mémoire (en production, utilise Redis ou MySQL)
-const gameSessions = new Map<
-  string,
-  {
-    sessionId: string;
-    player1: { pseudo: string | null; token: string; hasJoined: boolean };
-    player2: { pseudo: string | null; token: string; hasJoined: boolean };
-    createdAt: number;
-    expiresAt: number;
-  }
->();
-
-// Nettoie les sessions expirées toutes les minutes
-setInterval(() => {
-  const now = Date.now();
-  for (const [sessionId, session] of gameSessions.entries()) {
-    if (session.expiresAt < now) {
-      gameSessions.delete(sessionId);
-    }
-  }
-}, 60000);
-
-export async function POST(request: NextRequest) {
+export async function POST() {
   try {
     // Générer un ID de session unique
     const sessionId = randomBytes(16).toString("hex");
@@ -39,16 +18,10 @@ export async function POST(request: NextRequest) {
     const player2Token = randomBytes(16).toString("hex");
 
     // Créer la session (expire dans 30 minutes)
-    const session = {
-      sessionId,
-      player1: { pseudo: null, token: player1Token, hasJoined: false },
-      player2: { pseudo: null, token: player2Token, hasJoined: false },
-      createdAt: Date.now(),
-      expiresAt: Date.now() + 30 * 60 * 1000, // 30 minutes
-    };
+    const expiresAt = new Date(Date.now() + 30 * 60 * 1000);
 
-    // Sauvegarder la session
-    gameSessions.set(sessionId, session);
+    // Sauvegarder la session dans MySQL
+    await createGameSession(sessionId, player1Token, player2Token, expiresAt);
 
     console.log(`Nouvelle session créée: ${sessionId}`);
 
@@ -89,6 +62,3 @@ export async function POST(request: NextRequest) {
 export async function OPTIONS() {
   return NextResponse.json({}, { headers: corsHeaders });
 }
-
-// Export pour utilisation par d'autres routes
-export { gameSessions };
