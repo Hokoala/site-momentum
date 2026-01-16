@@ -1,16 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
+import { jwtVerify } from "jose";
 
 /**
  * Route API pour la communication avec Unity
  * Gère la lecture et l'écriture des données du jeu
  *
  * GET  - Public : lecture des paramètres et stats
- * POST - Sécurisé par JWT Bearer token
- *f
+ * POST - Sécurisé par JWT Bearer token (Better Auth ou Anonymous)
+ *
  * Authentification POST :
  * Header "Authorization: Bearer <jwt_token>"
- * Token obtenu via /api/auth/token ou /api/token/public
+ * Token obtenu via :
+ *   - /api/auth/token (avec compte utilisateur)
+ *   - /api/unity/auth (anonyme pour Unity)
  */
 
 const corsHeaders = {
@@ -53,30 +56,65 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    // Validation JWT Bearer avec Better Auth
+    // Vérifier le token (Better Auth ou Anonymous)
+    let userId: string;
+    let userIdentifier: string;
+    let isAnonymous = false;
+
+    // Essayer d'abord l'authentification Better Auth
     const session = await auth.api.getSession({
       headers: request.headers,
     });
 
-    if (!session) {
-      return NextResponse.json(
-        {
-          error: "Authentification requise",
-          message:
-            "Fournissez un JWT Bearer token dans le header Authorization",
-        },
-        { status: 401, headers: corsHeaders }
-      );
+    if (session) {
+      // Utilisateur authentifié avec Better Auth
+      userId = session.user.id;
+      userIdentifier = session.user.email || session.user.id;
+    } else {
+      // Vérifier si c'est un token anonyme Unity
+      const authHeader = request.headers.get("authorization");
+      if (!authHeader?.startsWith("Bearer ")) {
+        return NextResponse.json(
+          {
+            error: "Authentification requise",
+            message: "Fournissez un JWT Bearer token dans le header Authorization",
+          },
+          { status: 401, headers: corsHeaders }
+        );
+      }
+
+      const token = authHeader.substring(7);
+      try {
+        const secret = new TextEncoder().encode(
+          process.env.BETTER_AUTH_SECRET || "fallback-secret-key"
+        );
+        const { payload } = await jwtVerify(token, secret);
+
+        if (payload.type === "anonymous") {
+          // Token anonyme valide
+          userId = `anonymous_${payload.deviceId}`;
+          userIdentifier = payload.deviceId as string;
+          isAnonymous = true;
+        } else {
+          throw new Error("Invalid token type");
+        }
+      } catch (error) {
+        return NextResponse.json(
+          {
+            error: "Token invalide",
+            message: "Le token JWT fourni n'est pas valide ou a expiré",
+          },
+          { status: 401, headers: corsHeaders }
+        );
+      }
     }
 
     const { action, scores, playerData } = body;
-    const userId = session.user.id;
-    const userEmail = session.user.email;
 
     if (action === "save_score") {
       // TODO: Sauvegarder les scores dans MySQL
       console.log(
-        `[JWT Bearer] Sauvegarde des scores pour user ${userEmail}:`,
+        `[${isAnonymous ? "Anonymous" : "Authenticated"}] Sauvegarde des scores pour ${userIdentifier}:`,
         scores
       );
 
@@ -85,6 +123,7 @@ export async function POST(request: NextRequest) {
           success: true,
           message: "Scores sauvegardés avec succès",
           userId,
+          isAnonymous,
           data: scores,
         },
         { headers: corsHeaders }
@@ -94,7 +133,7 @@ export async function POST(request: NextRequest) {
     if (action === "save_player_data") {
       // TODO: Sauvegarder les données joueur dans MySQL
       console.log(
-        `[JWT Bearer] Sauvegarde des données pour ${userEmail}:`,
+        `[${isAnonymous ? "Anonymous" : "Authenticated"}] Sauvegarde des données pour ${userIdentifier}:`,
         playerData
       );
 
@@ -103,6 +142,7 @@ export async function POST(request: NextRequest) {
           success: true,
           message: "Données joueur sauvegardées",
           userId,
+          isAnonymous,
           data: playerData,
         },
         { headers: corsHeaders }
