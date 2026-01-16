@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { gameSessions } from "../session/route";
+import {
+  getGameSession,
+  updatePlayerPseudo,
+  deleteGameSession,
+} from "@/lib/game-sessions";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -19,7 +23,7 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const session = gameSessions.get(sessionId);
+  const session = await getGameSession(sessionId);
 
   if (!session) {
     return NextResponse.json(
@@ -29,8 +33,8 @@ export async function GET(request: NextRequest) {
   }
 
   // Vérifier si la session a expiré
-  if (session.expiresAt < Date.now()) {
-    gameSessions.delete(sessionId);
+  if (session.expiresAt < new Date()) {
+    await deleteGameSession(sessionId);
     return NextResponse.json(
       { error: "Session expirée" },
       { status: 410, headers: corsHeaders }
@@ -68,7 +72,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const session = gameSessions.get(sessionId);
+    const session = await getGameSession(sessionId);
 
     if (!session) {
       return NextResponse.json(
@@ -78,13 +82,12 @@ export async function POST(request: NextRequest) {
     }
 
     // Vérifier le token et mettre à jour le pseudo
+    let updatedSession;
     if (session.player1.token === playerToken) {
-      session.player1.pseudo = pseudo.trim();
-      session.player1.hasJoined = true;
+      updatedSession = await updatePlayerPseudo(sessionId, 1, pseudo.trim());
       console.log(`Joueur 1 a rejoint: ${pseudo}`);
     } else if (session.player2.token === playerToken) {
-      session.player2.pseudo = pseudo.trim();
-      session.player2.hasJoined = true;
+      updatedSession = await updatePlayerPseudo(sessionId, 2, pseudo.trim());
       console.log(`Joueur 2 a rejoint: ${pseudo}`);
     } else {
       return NextResponse.json(
@@ -98,7 +101,8 @@ export async function POST(request: NextRequest) {
         success: true,
         message: "Pseudo enregistré avec succès",
         bothReady:
-          session.player1.pseudo !== null && session.player2.pseudo !== null,
+          updatedSession?.player1.pseudo !== null &&
+          updatedSession?.player2.pseudo !== null,
       },
       { headers: corsHeaders }
     );
