@@ -10,15 +10,15 @@ const menuItems = [
     },
     {
         label: 'DESCRIPTION',
-        href: '#Description',
+        href: '/#Description',
     },
     {
         label: 'Creators',
-        href: '#Creators',
+        href: '/#Creators',
     },
     {
-        label: 'SCORES',
-        href: '#Scores',
+        label: 'Statistiques',
+        href: '/statistiques',
     }
 ];
 
