@@ -6,19 +6,14 @@ import { jwtVerify } from "jose";
  * Route API pour la communication avec Unity
  * Gère la lecture et l'écriture des données du jeu
  *
- * GET avec parametre=lecture (PUBLIC) :
- *   /api/game?parametre=lecture
- *   Retourne les paramètres du jeu
- *
- * GET avec parametre=ecriture (SÉCURISÉ PAR CLEFSECU) :
- *   /api/game?parametre=ecriture&clefsecu=VOTRE_CLE&valeur=contenuAecrire
- *   Écrit des données (requiert une clé de sécurité)
- *
+ * GET  - Public : lecture des paramètres et stats
  * POST - Sécurisé par JWT Bearer token (Better Auth ou Anonymous)
- *   Header "Authorization: Bearer <jwt_token>"
- *   Token obtenu via :
- *     - /api/auth/token (avec compte utilisateur)
- *     - /api/unity/auth (anonyme pour Unity)
+ *
+ * Authentification POST :
+ * Header "Authorization: Bearer <jwt_token>"
+ * Token obtenu via :
+ *   - /api/auth/token (avec compte utilisateur)
+ *   - /api/unity/auth (anonyme pour Unity)
  */
 
 const corsHeaders = {
@@ -27,17 +22,11 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "Content-Type, Authorization",
 };
 
-// Route GET - Lecture/Écriture des paramètres du jeu
+// Route GET - Lecture des paramètres du jeu (PUBLIC)
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const parametre = searchParams.get("parametre");
-  const clefsecu = searchParams.get("clefsecu");
-  const valeur = searchParams.get("valeur");
 
-  // Vérifier la clé de sécurité pour les opérations d'écriture
-  const SECURITY_KEY = process.env.GAME_API_SECURITY_KEY;
-
-  // Mode lecture (PUBLIC)
   if (parametre === "lecture") {
     // TODO: Récupérer les paramètres depuis MySQL
     const gameSettings = {
@@ -56,48 +45,8 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  // Mode écriture (SÉCURISÉ PAR CLEFSECU)
-  if (parametre === "ecriture") {
-    // Vérifier la clé de sécurité
-    if (!clefsecu || clefsecu !== SECURITY_KEY) {
-      return NextResponse.json(
-        {
-          error: "Clé de sécurité invalide ou manquante",
-          message: "Vous devez fournir une clé de sécurité valide pour l'écriture"
-        },
-        { status: 401, headers: corsHeaders }
-      );
-    }
-
-    // Vérifier que la valeur est fournie
-    if (!valeur) {
-      return NextResponse.json(
-        {
-          error: "Valeur manquante",
-          message: "Le paramètre 'valeur' est requis pour l'écriture"
-        },
-        { status: 400, headers: corsHeaders }
-      );
-    }
-
-    // TODO: Sauvegarder la valeur dans MySQL
-    console.log(`[API] Écriture de données: ${valeur}`);
-
-    return NextResponse.json(
-      {
-        success: true,
-        message: "Données écrites avec succès",
-        valeurEcrite: valeur,
-      },
-      { headers: corsHeaders }
-    );
-  }
-
   return NextResponse.json(
-    {
-      error: "Paramètre invalide",
-      message: "Le paramètre doit être 'lecture' ou 'ecriture'"
-    },
+    { error: "Paramètre invalide" },
     { status: 400, headers: corsHeaders }
   );
 }
