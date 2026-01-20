@@ -60,11 +60,15 @@ function JoinGameForm() {
 
   if (success) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4">
-        <div className="rounded-2xl shadow-2xl p-8 max-w-md w-full text-center">
-          <div className="mb-6">
+      <div className="min-h-screen flex items-center justify-center p-4 bg-black">
+        <div className="rounded-2xl shadow-2xl p-8 max-w-md w-full text-center border border-white/30 bg-white/5 backdrop-blur-sm">
+          {/* Icône de succès avec animation */}
+          <div className="mb-6 relative">
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-24 h-24 bg-[#C0FE04]/20 rounded-full animate-ping"></div>
+            </div>
             <svg
-              className="w-20 h-20 text-green-500 mx-auto"
+              className="w-20 h-20 text-[#C0FE04] mx-auto relative z-10"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -77,18 +81,33 @@ function JoinGameForm() {
               />
             </svg>
           </div>
-          <h1 className="text-3xl font-bold text-gray-800 mb-4">
-            Bienvenue, {pseudo}!
+
+          <h1 className="text-3xl font-bold text-white mb-2">
+            Bienvenue, <span className="text-[#C0FE04]">{pseudo}</span>!
           </h1>
-          <p className="text-gray-600 mb-2">
-            Tu es maintenant connecté en tant que{" "}
-            <span className="font-bold">Joueur {playerNumber}</span>
-          </p>
-          <p className="text-gray-500 text-sm">
+
+          <div className="bg-white/10 rounded-xl p-4 mt-6 mb-6">
+            <p className="text-white/80 mb-1">
+              Tu es maintenant connecté en tant que
+            </p>
+            <span className="text-2xl font-bold text-[#C0FE04]">
+              Joueur {playerNumber}
+            </span>
+          </div>
+
+          <p className="text-white/60 text-sm mb-6">
             Attends que l'autre joueur se connecte pour commencer la partie...
           </p>
-          <div className="mt-6 flex justify-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+
+          {/* Spinner d'attente */}
+          <div className="flex flex-col items-center gap-3">
+            <div className="relative">
+              <div className="w-12 h-12 border-4 border-white/20 rounded-full"></div>
+              <div className="absolute top-0 left-0 w-12 h-12 border-4 border-[#C0FE04] rounded-full border-t-transparent animate-spin"></div>
+            </div>
+            <span className="text-white/40 text-xs uppercase tracking-wider">
+              En attente...
+            </span>
           </div>
         </div>
       </div>
@@ -97,7 +116,7 @@ function JoinGameForm() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-black">
-      <div className="rounded-2xl shadow-2xl p-8 max-w-md w-full">
+      <div className="rounded-2xl shadow-2xl p-8 max-w-md w-full border border-white/30 bg-white/5 backdrop-blur-sm">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-white mb-2">Momentum Game</h1>
           <p className="text-white">Joueur {playerNumber}</p>
@@ -168,8 +187,25 @@ function JoinGameForm() {
           </Button>
         </form>
 
-        <div className="mt-6 text-center text-sm text-gray-500">
-          <p>Session: {sessionId?.substring(0, 8)}...</p>
+        <div className="mt-6 pt-6 border-t border-white/20">
+          <div className="flex items-center justify-center gap-2 text-white/60">
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+              />
+            </svg>
+            <span className="text-sm font-mono">
+              Session: {sessionId?.substring(0, 8)}...
+            </span>
+          </div>
         </div>
       </div>
     </div>

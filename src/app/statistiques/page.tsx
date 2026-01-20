@@ -3,6 +3,17 @@
 import SlideDown from "@/components/SlideDown";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import {
+  Globe,
+  History,
+  Settings,
+  ChevronDown,
+  Trophy,
+  Medal,
+  Check,
+  X,
+  ArrowRight,
+} from "lucide-react";
 
 interface LeaderboardEntry {
   rank: number;
@@ -186,9 +197,9 @@ export default function StatisticsPage() {
   };
 
   const getRankIcon = (rank: number) => {
-    if (rank === 1) return "🥇";
-    if (rank === 2) return "🥈";
-    if (rank === 3) return "🥉";
+    if (rank === 1) return <Medal className="w-6 h-6 text-yellow-400" />;
+    if (rank === 2) return <Medal className="w-5 h-5 text-gray-300" />;
+    if (rank === 3) return <Medal className="w-5 h-5 text-amber-600" />;
     return `#${rank}`;
   };
 
@@ -220,23 +231,25 @@ export default function StatisticsPage() {
             <div className="flex gap-4 mb-8">
               <button
                 onClick={() => setActiveTab("leaderboard")}
-                className={`px-6 py-3 rounded-lg font-bold transition-all ${
+                className={`px-6 py-3 rounded-lg font-bold transition-all flex items-center gap-2 ${
                   activeTab === "leaderboard"
                     ? "bg-[#C0FE04] text-black"
                     : "bg-white/5 text-white hover:bg-white/10"
                 }`}
               >
-                🌍 Classement Mondial
+                <Globe className="w-5 h-5" />
+                Classement Mondial
               </button>
               <button
                 onClick={() => setActiveTab("history")}
-                className={`px-6 py-3 rounded-lg font-bold transition-all ${
+                className={`px-6 py-3 rounded-lg font-bold transition-all flex items-center gap-2 ${
                   activeTab === "history"
                     ? "bg-[#C0FE04] text-black"
                     : "bg-white/5 text-white hover:bg-white/10"
                 }`}
               >
-                📜 Historique
+                <History className="w-5 h-5" />
+                Historique
               </button>
             </div>
           </SlideDown>
@@ -291,15 +304,13 @@ export default function StatisticsPage() {
                     onClick={() => setShowFilters(!showFilters)}
                     className="flex items-center gap-2 text-white/70 hover:text-white transition-colors mb-4"
                   >
-                    <span className="text-lg">⚙️</span>
+                    <Settings className="w-5 h-5" />
                     <span>Filtres</span>
-                    <span
-                      className={`transition-transform ${
+                    <ChevronDown
+                      className={`w-4 h-4 transition-transform ${
                         showFilters ? "rotate-180" : ""
                       }`}
-                    >
-                      ▼
-                    </span>
+                    />
                   </button>
 
                   {showFilters && (
@@ -481,21 +492,21 @@ export default function StatisticsPage() {
                         </div>
 
                         {/* Fini */}
-                        <div className="col-span-1 text-center">
+                        <div className="col-span-1 flex justify-center">
                           {entry.hasFinished ? (
-                            <span className="text-green-500 font-bold">✓</span>
+                            <Check className="w-5 h-5 text-green-500" />
                           ) : (
-                            <span className="text-red-500 font-bold">✗</span>
+                            <X className="w-5 h-5 text-red-500" />
                           )}
                         </div>
 
                         {/* Lien détails */}
-                        <div className="col-span-1 text-center">
+                        <div className="col-span-1 flex justify-center">
                           <Link
                             href={`/statistiques/${entry.sessionId}`}
                             className="text-white/30 hover:text-[#C0FE04] transition-colors"
                           >
-                            →
+                            <ArrowRight className="w-5 h-5" />
                           </Link>
                         </div>
                       </div>
@@ -545,14 +556,16 @@ export default function StatisticsPage() {
                                 Joueur 1
                               </div>
                               <div
-                                className={`font-bold ${
+                                className={`font-bold flex items-center gap-1 ${
                                   game.winner?.playerNumber === 1
                                     ? "text-[#C0FE04]"
                                     : "text-white"
                                 }`}
                               >
                                 {game.player1Pseudo || "—"}
-                                {game.winner?.playerNumber === 1 && " 🏆"}
+                                {game.winner?.playerNumber === 1 && (
+                                  <Trophy className="w-4 h-4" />
+                                )}
                               </div>
                             </div>
 
@@ -565,14 +578,16 @@ export default function StatisticsPage() {
                                 Joueur 2
                               </div>
                               <div
-                                className={`font-bold ${
+                                className={`font-bold flex items-center gap-1 ${
                                   game.winner?.playerNumber === 2
                                     ? "text-[#C0FE04]"
                                     : "text-white"
                                 }`}
                               >
                                 {game.player2Pseudo || "—"}
-                                {game.winner?.playerNumber === 2 && " 🏆"}
+                                {game.winner?.playerNumber === 2 && (
+                                  <Trophy className="w-4 h-4" />
+                                )}
                               </div>
                             </div>
                           </div>
@@ -591,7 +606,7 @@ export default function StatisticsPage() {
 
                           {/* Flèche */}
                           <div className="text-white/30 group-hover:text-[#C0FE04] transition-colors">
-                            →
+                            <ArrowRight className="w-5 h-5" />
                           </div>
                         </div>
                       </div>

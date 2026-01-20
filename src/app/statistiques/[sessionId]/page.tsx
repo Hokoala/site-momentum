@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import SlideDown from "@/components/SlideDown";
 import Image from "next/image";
+import { Trophy, Check, X, ArrowLeft } from "lucide-react";
 
 interface PlayerScore {
   rank: number;
@@ -140,9 +141,9 @@ export default function SessionDetailsPage() {
           <p className="text-white/70 mb-8">{error || "Session non trouvée"}</p>
           <button
             onClick={() => router.push("/statistiques")}
-            className="text-[#C0FE04] hover:underline"
+            className="text-[#C0FE04] hover:underline flex items-center gap-2 mx-auto"
           >
-            ← Retour aux statistiques
+            <ArrowLeft className="w-5 h-5" /> Retour aux statistiques
           </button>
         </div>
       </main>
@@ -161,7 +162,7 @@ export default function SessionDetailsPage() {
             onClick={() => router.push("/statistiques")}
             className="mb-8 text-white hover:text-[#C0FE04] transition-colors flex items-center gap-2"
           >
-            ← Retour aux statistiques
+            <ArrowLeft className="w-5 h-5" /> Retour aux statistiques
           </button>
 
           {/* Header avec image de la map */}
@@ -234,8 +235,8 @@ export default function SessionDetailsPage() {
                     Joueur 1
                   </span>
                   {session.winner?.playerNumber === 1 && (
-                    <span className="bg-[#C0FE04] text-black px-2 py-1 rounded text-xs font-bold">
-                      🏆 GAGNANT
+                    <span className="bg-[#C0FE04] text-black px-2 py-1 rounded text-xs font-bold flex items-center gap-1">
+                      <Trophy className="w-3 h-3" /> GAGNANT
                     </span>
                   )}
                 </div>
@@ -243,13 +244,21 @@ export default function SessionDetailsPage() {
                   {session.players.player1.pseudo || "Non défini"}
                 </h3>
                 <span
-                  className={`text-sm ${
+                  className={`text-sm flex items-center gap-1 ${
                     session.players.player1.joined
                       ? "text-green-500"
                       : "text-red-500"
                   }`}
                 >
-                  {session.players.player1.joined ? "✓ Connecté" : "✗ Non connecté"}
+                  {session.players.player1.joined ? (
+                    <>
+                      <Check className="w-4 h-4" /> Connecté
+                    </>
+                  ) : (
+                    <>
+                      <X className="w-4 h-4" /> Non connecté
+                    </>
+                  )}
                 </span>
                 {/* Score du joueur 1 */}
                 {session.scores.find((s) => s.playerNumber === 1) && (
@@ -277,8 +286,8 @@ export default function SessionDetailsPage() {
                     Joueur 2
                   </span>
                   {session.winner?.playerNumber === 2 && (
-                    <span className="bg-[#C0FE04] text-black px-2 py-1 rounded text-xs font-bold">
-                      🏆 GAGNANT
+                    <span className="bg-[#C0FE04] text-black px-2 py-1 rounded text-xs font-bold flex items-center gap-1">
+                      <Trophy className="w-3 h-3" /> GAGNANT
                     </span>
                   )}
                 </div>
@@ -286,13 +295,21 @@ export default function SessionDetailsPage() {
                   {session.players.player2.pseudo || "Non défini"}
                 </h3>
                 <span
-                  className={`text-sm ${
+                  className={`text-sm flex items-center gap-1 ${
                     session.players.player2.joined
                       ? "text-green-500"
                       : "text-red-500"
                   }`}
                 >
-                  {session.players.player2.joined ? "✓ Connecté" : "✗ Non connecté"}
+                  {session.players.player2.joined ? (
+                    <>
+                      <Check className="w-4 h-4" /> Connecté
+                    </>
+                  ) : (
+                    <>
+                      <X className="w-4 h-4" /> Non connecté
+                    </>
+                  )}
                 </span>
                 {/* Score du joueur 2 */}
                 {session.scores.find((s) => s.playerNumber === 2) && (
@@ -329,10 +346,10 @@ export default function SessionDetailsPage() {
                     key={index}
                     className="grid grid-cols-6 gap-4 p-4 border-b border-white/5 text-white hover:bg-white/5 transition-colors items-center"
                   >
-                    <div className="font-bold">
+                    <div className="font-bold flex items-center gap-2">
                       {score.playerName}
                       {session.winner?.playerNumber === score.playerNumber && (
-                        <span className="ml-2 text-[#C0FE04]">🏆</span>
+                        <Trophy className="w-4 h-4 text-[#C0FE04]" />
                       )}
                     </div>
                     <div className="text-right text-[#C0FE04] font-bold">
@@ -347,11 +364,11 @@ export default function SessionDetailsPage() {
                     <div className="text-right">
                       {score.collectiblesCollected}
                     </div>
-                    <div className="text-center">
+                    <div className="flex justify-center">
                       {score.hasFinished ? (
-                        <span className="text-green-500 font-bold">✓</span>
+                        <Check className="w-5 h-5 text-green-500" />
                       ) : (
-                        <span className="text-red-500 font-bold">✗</span>
+                        <X className="w-5 h-5 text-red-500" />
                       )}
                     </div>
                   </div>

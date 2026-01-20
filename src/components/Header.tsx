@@ -36,7 +36,7 @@ export default function Header() {
           className="text-white text-lg md:text-xl font-bold tracking-wider transition-all duration-300 hover:text-[#C0FE04] flex items-center"
         >
           <Image
-            src="logo.png"
+            src="/logo.png"
             alt="Logo"
             width={50}
             height={50}
@@ -85,8 +85,8 @@ export default function Header() {
           ))}
         </nav>
 
-        {/* Bouton Jouer - desktop */}
-        <Button variant="default" size="default">
+        {/* Bouton Jouer - desktop seulement */}
+        <Button variant="default" size="default" className="hidden lg:block">
           <Link href="/">JOUER</Link>
         </Button>
       </div>
