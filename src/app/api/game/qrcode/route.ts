@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
   if (!url) {
     return NextResponse.json(
       { error: "URL requise" },
-      { status: 400, headers: corsHeaders }
+      { status: 400, headers: corsHeaders },
     );
   }
 
@@ -40,13 +40,14 @@ export async function GET(request: NextRequest) {
         ...corsHeaders,
         "Content-Type": "image/png",
         "Cache-Control": "public, max-age=3600",
+        "Access-Control-Allow-Origin": "*",
       },
     });
   } catch (error) {
     console.error("Erreur génération QR code:", error);
     return NextResponse.json(
       { error: "Erreur lors de la génération du QR code" },
-      { status: 500, headers: corsHeaders }
+      { status: 500, headers: corsHeaders },
     );
   }
 }
