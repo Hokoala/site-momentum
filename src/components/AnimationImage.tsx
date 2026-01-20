@@ -44,7 +44,7 @@ export default function AnimationImage() {
             {/* Panel 1 - COURIR, SURVIVRE, GAGNER */}
             <section className="panel relative w-full h-screen overflow-hidden">
                 <Image
-                    src="/assets/screen1.png"
+                    src="/assets/Image-animation.png"
                     alt="Gameplay de Momentum"
                     fill
                     className="object-cover"
@@ -67,7 +67,7 @@ export default function AnimationImage() {
             {/* Panel 2 - Deuxième image */}
             <section className="panel relative w-full h-screen overflow-hidden">
                 <Image
-                    src="/assets/marathon-anim.jpg"
+                    src="/assets/Image2-animation.png"
                     alt="Marathon animation"
                     fill
                     className="object-cover"

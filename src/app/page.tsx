@@ -9,6 +9,7 @@ import Button from "@/components/ButtonSavoir";
 import ScrollReveal from "@/components/ScrollReveal";
 import AnimationImage from "@/components/AnimationImage";
 import SlideDown from "@/components/SlideDown";
+import PixelTransition from "@/components/PixelTransition";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
@@ -103,15 +104,15 @@ export default function Home() {
           </SlideDown>
         </div>
 
-        {/* Image - cachée sur mobile, visible sur tablette+ */}
+        {/* Vidéo - cachée sur mobile, visible sur tablette+ */}
         <div className="hidden md:block absolute right-4 bottom-10 lg:right-16 lg:bottom-0 pointer-events-none">
-          <Image
-            src="/assets/test1.png"
-            alt="Gameplay de Momentum montrant un coureur en action"
-            width={700}
-            height={700}
-            className="w-64 lg:w-[500px] xl:w-[700px] h-auto opacity-80 lg:opacity-100"
-            priority
+          <video
+            src="/assets/video/attract.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-64 lg:w-[600px] xl:w-[900px] h-auto opacity-80 lg:opacity-100"
           />
         </div>
 
@@ -143,81 +144,148 @@ export default function Home() {
           </SlideDown>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {/* Créateur 1 */}
+            {/* Créateur 1 - Elouan */}
             <SlideDown triggerId="Creators" delay={0.1}>
-            <div className="bg-white/5 border border-lime-400/20 p-6 hover:border-lime-400 transition-all duration-300 h-full">
-              <h3 className="text-xl font-bold text-lime-400 mb-2">
-                Elouan Bruzek
-              </h3>
-              <p className="text-white/70 text-sm mb-4">
-                [Game developer / Web developer]
-              </p>
-              <a
-                href="https://elouanb.fr/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-lime-400 text-sm hover:underline"
-              >
-                Portfolio →
-              </a>
-            </div>
+              <PixelTransition
+                firstContent={
+                  <Image
+                    src="/assets/creators/elouan2.jpg"
+                    alt="Elouan Bruzek"
+                    fill
+                    className="object-cover"
+                  />
+                }
+                secondContent={
+                  <div className="w-full h-full flex flex-col items-center justify-center bg-black p-4 text-center">
+                    <h3 className="text-xl font-bold text-lime-400 mb-2">
+                      Elouan Bruzek
+                    </h3>
+                    <p className="text-white/70 text-sm mb-4">
+                      Game developer / Web developer
+                    </p>
+                    <a
+                      href="https://elouanb.fr/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-lime-400 text-sm hover:underline"
+                    >
+                      Portfolio →
+                    </a>
+                  </div>
+                }
+                gridSize={12}
+                pixelColor="#C0FE04"
+                className="w-full"
+                style={{ border: "2px solid #C0FE04" }}
+              />
             </SlideDown>
 
-            {/* Créateur 2 */}
+            {/* Créateur 2 - Jean-Michel */}
             <SlideDown triggerId="Creators" delay={0.2}>
-            <div className="bg-white/5 border border-lime-400/20 p-6 hover:border-lime-400 transition-all duration-300 h-full">
-              <h3 className="text-xl font-bold text-lime-400 mb-2">
-                Jean-Michel Le
-              </h3>
-              <p className="text-white/70 text-sm mb-4">
-                  [Game developer / Web developer]</p>
-              <a
-                href="https://portfolio-nine-kappa-50.vercel.app/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-lime-400 text-sm hover:underline"
-              >
-                Portfolio →
-              </a>
-            </div>
+              <PixelTransition
+                firstContent={
+                  <Image
+                    src="/assets/creators/JM1.png"
+                    alt="Jean-Michel Le"
+                    fill
+                    className="object-cover"
+                  />
+                }
+                secondContent={
+                  <div className="w-full h-full flex flex-col items-center justify-center bg-black p-4 text-center">
+                    <h3 className="text-xl font-bold text-lime-400 mb-2">
+                      Jean-Michel Le
+                    </h3>
+                    <p className="text-white/70 text-sm mb-4">
+                      Game developer / Web developer
+                    </p>
+                    <a
+                      href="https://portfolio-nine-kappa-50.vercel.app/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-lime-400 text-sm hover:underline"
+                    >
+                      Portfolio →
+                    </a>
+                  </div>
+                }
+                gridSize={12}
+                pixelColor="#C0FE04"
+                className="w-full"
+                style={{ border: "2px solid #C0FE04" }}
+              />
             </SlideDown>
 
-            {/* Créateur 3 */}
+            {/* Créateur 3 - Job-Faël */}
             <SlideDown triggerId="Creators" delay={0.3}>
-            <div className="bg-white/5 border border-lime-400/20 p-6 hover:border-lime-400 transition-all duration-300 h-full">
-              <h3 className="text-xl font-bold text-lime-400 mb-2">
-                Job-Faël Babalola
-              </h3>
-              <p className="text-white/70 text-sm mb-4">
-                  [Sound Designer / Graphic Designer]
-              </p>
-              <a
-                href="http://mmi23f01.mmi-troyes.fr/portfolio/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-lime-400 text-sm hover:underline"
-              >
-                Portfolio →
-              </a>
-            </div>
+              <PixelTransition
+                firstContent={
+                  <Image
+                    src="/assets/creators/JOB2.jpg"
+                    alt="Job-Faël Babalola"
+                    fill
+                    className="object-cover"
+                  />
+                }
+                secondContent={
+                  <div className="w-full h-full flex flex-col items-center justify-center bg-black p-4 text-center">
+                    <h3 className="text-xl font-bold text-lime-400 mb-2">
+                      Job-Faël Babalola
+                    </h3>
+                    <p className="text-white/70 text-sm mb-4">
+                      Sound Designer / Graphic Designer
+                    </p>
+                    <a
+                      href="http://mmi23f01.mmi-troyes.fr/portfolio/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-lime-400 text-sm hover:underline"
+                    >
+                      Portfolio →
+                    </a>
+                  </div>
+                }
+                gridSize={12}
+                pixelColor="#C0FE04"
+                className="w-full"
+                style={{ border: "2px solid #C0FE04" }}
+              />
             </SlideDown>
 
-            {/* Créateur 4 */}
+            {/* Créateur 4 - Théo */}
             <SlideDown triggerId="Creators" delay={0.4}>
-            <div className="bg-white/5 border border-lime-400/20 p-6 hover:border-lime-400 transition-all duration-300 h-full">
-              <h3 className="text-xl font-bold text-lime-400 mb-2">Théo Birost</h3>
-              <p className="text-white/70 text-sm mb-4">
-                  [Graphic Designer / Artist 3D]
-              </p>
-              <a
-                href="http://45.147.97.140/portfolio/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-lime-400 text-sm hover:underline"
-              >
-                Portfolio →
-              </a>
-            </div>
+              <PixelTransition
+                firstContent={
+                  <Image
+                    src="/assets/creators/THEO1.png"
+                    alt="Théo Birost"
+                    fill
+                    className="object-cover"
+                  />
+                }
+                secondContent={
+                  <div className="w-full h-full flex flex-col items-center justify-center bg-black p-4 text-center">
+                    <h3 className="text-xl font-bold text-lime-400 mb-2">
+                      Théo Birost
+                    </h3>
+                    <p className="text-white/70 text-sm mb-4">
+                      Graphic Designer / Artist 3D
+                    </p>
+                    <a
+                      href="http://45.147.97.140/portfolio/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-lime-400 text-sm hover:underline"
+                    >
+                      Portfolio →
+                    </a>
+                  </div>
+                }
+                gridSize={12}
+                pixelColor="#C0FE04"
+                className="w-full"
+                style={{ border: "2px solid #C0FE04" }}
+              />
             </SlideDown>
           </div>
         </div>
