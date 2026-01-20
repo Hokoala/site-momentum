@@ -149,7 +149,7 @@ export default function Home() {
               <PixelTransition
                 firstContent={
                   <Image
-                    src="/assets/creators/elouan2.jpg"
+                    src="/assets/creators/ELOUAN.png"
                     alt="Elouan Bruzek"
                     fill
                     className="object-cover"
@@ -185,7 +185,7 @@ export default function Home() {
               <PixelTransition
                 firstContent={
                   <Image
-                    src="/assets/creators/JM1.png"
+                    src="/assets/creators/JM.png"
                     alt="Jean-Michel Le"
                     fill
                     className="object-cover"
@@ -200,7 +200,7 @@ export default function Home() {
                       Game developer / Web developer
                     </p>
                     <a
-                      href="https://portfolio-nine-kappa-50.vercel.app/"
+                      href="https://jean-michel-le.dev/"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-lime-400 text-sm hover:underline"
@@ -221,7 +221,7 @@ export default function Home() {
               <PixelTransition
                 firstContent={
                   <Image
-                    src="/assets/creators/JOB2.jpg"
+                    src="/assets/creators/JOB.png"
                     alt="Job-Faël Babalola"
                     fill
                     className="object-cover"
@@ -257,7 +257,7 @@ export default function Home() {
               <PixelTransition
                 firstContent={
                   <Image
-                    src="/assets/creators/THEO1.png"
+                    src="/assets/creators/THEO.png"
                     alt="Théo Birost"
                     fill
                     className="object-cover"
