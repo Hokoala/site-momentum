@@ -44,7 +44,7 @@ const mapConfig: Record<
 > = {
   main: {
     title: "Main Arena",
-    image: "/assets/gameplay.png",
+    image: "/assets/map.png",
     description: "L'arène principale avec des néons et des courses à haute vitesse",
   },
   default: {
