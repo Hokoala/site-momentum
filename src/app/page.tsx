@@ -40,113 +40,79 @@ export default function Home() {
         <span>MOMENTUM_BUILD_2026</span>
       </div>
 
-            {/* --- HERO SECTION --- */}
+      {/* --- HERO SECTION --- */}
+      <section className="relative w-full h-screen border-b border-white/20 overflow-hidden bg-black">
+        {/* VIDEO BACKGROUND */}
+        <div className="absolute inset-0 z-0">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover opacity-60"
+          >
+            <source src="/assets/video/attract.mp4" type="video/mp4" />
+          </video>
 
-            <section className="relative w-full h-screen border-b border-white/20 overflow-hidden bg-black">
+          {/* DOT PATTERN OVERLAY */}
+          <svg className="absolute inset-0 w-full h-full pointer-events-none z-10" width="100%" height="100%" style={{ opacity: 0.25 }}>
+            <defs>
+              <pattern id="dots" x="0" y="0" width="5" height="5" patternUnits="userSpaceOnUse">
+                <circle cx="1" cy="1" r="1" fill="#fff"></circle>
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#dots)"></rect>
+          </svg>
 
-              {/* VIDEO BACKGROUND */}
-              <div className="absolute inset-0 z-0">
-                   <video
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      className="w-full h-full object-cover opacity-60"
-                   >
-                      <source src="/assets/video/attract.mp4" type="video/mp4" />
-                   </video>
+          {/* Gradient Overlay for text readability */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-20"></div>
+        </div>
 
-                   {/* DOT PATTERN OVERLAY */}
-                   <svg className="absolute inset-0 w-full h-full pointer-events-none z-10" width="100%" height="100%" style={{ opacity: 0.25 }}>
-                      <defs>
-                        <pattern id="dots" x="0" y="0" width="5" height="5" patternUnits="userSpaceOnUse">
-                          <circle cx="1" cy="1" r="1" fill="#fff"></circle>
-                        </pattern>
-                      </defs>
-                      <rect width="100%" height="100%" fill="url(#dots)"></rect>
-                   </svg>
+        {/* Overlay Grid Lines (Static) */}
+        <div className="absolute inset-0 z-10 pointer-events-none opacity-20">
+          <div className="w-full h-full grid grid-cols-4 md:grid-cols-6 border-r border-white/10">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="border-r border-white/10 h-full"></div>
+            ))}
+          </div>
+        </div>
 
-                   {/* Gradient Overlay for text readability */}
-                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-20"></div>
+        {/* Content */}
+        <div className="relative z-20 w-full h-full flex flex-col justify-between p-6 md:p-12 pt-20 md:pt-32">
+          <div className="w-full flex justify-between items-start">
+            <Crosshair className="w-6 h-6 text-primary animate-spin-slow" />
+            <Maximize2 className="w-6 h-6 text-white/50" />
+          </div>
+
+          <div className="flex flex-col items-start max-w-7xl">
+            <HeroTitre />
+
+            <SlideDown
+              triggerId="hero-cta"
+              delay={0.3}
+              className="mt-8 flex flex-col md:flex-row gap-6 items-start"
+            >
+              <Link href="/game/join">
+                <Button className="rounded-none h-12 px-8 text-sm font-bold uppercase tracking-widest bg-primary text-black hover:bg-white hover:text-black border border-transparent hover:border-white transition-all duration-0">
+                  [ Initiater le protocole ]
+                </Button>
+              </Link>
+              <div className="flex items-center gap-3 text-[10px] font-mono text-white/60 max-w-xs leading-relaxed">
+                <div className="w-1.5 h-1.5 bg-red-500 animate-pulse"></div>
+                <span>
+                  ATTENTION: Rythme cardiaque élevé détecté. Préparez-vous à
+                  l'impact.
+                </span>
               </div>
+            </SlideDown>
+          </div>
 
-              
-
-              {/* Overlay Grid Lines (Static) */}
-
-              <div className="absolute inset-0 z-10 pointer-events-none opacity-20">
-
-                  <div className="w-full h-full grid grid-cols-4 md:grid-cols-6 border-r border-white/10">
-
-                      {Array.from({ length: 6 }).map((_, i) => (
-
-                          <div key={i} className="border-r border-white/10 h-full"></div>
-
-                      ))}
-
-                  </div>
-
-              </div>
-
-      
-
-              {/* Content */}
-
-              <div className="relative z-20 w-full h-full flex flex-col justify-between p-6 md:p-12 pt-20 md:pt-32">
-
-                  <div className="w-full flex justify-between items-start">
-
-                      <Crosshair className="w-6 h-6 text-primary animate-spin-slow" />
-
-                      <Maximize2 className="w-6 h-6 text-white/50" />
-
-                  </div>
-
-      
-
-                  <div className="flex flex-col items-start max-w-7xl">
-
-                      <HeroTitre />
-
-                      
-
-                      <SlideDown triggerId="hero-cta" delay={0.3} className="mt-8 flex flex-col md:flex-row gap-6 items-start">
-
-                          <Link href="/game/join">
-
-                              <Button className="rounded-none h-12 px-8 text-sm font-bold uppercase tracking-widest bg-primary text-black hover:bg-white hover:text-black border border-transparent hover:border-white transition-all duration-0">
-
-                                  [ Initiater le protocole ]
-
-                              </Button>
-
-                          </Link>
-
-                          <div className="flex items-center gap-3 text-[10px] font-mono text-white/60 max-w-xs leading-relaxed">
-
-                              <div className="w-1.5 h-1.5 bg-red-500 animate-pulse"></div>
-
-                              <span>ATTENTION: Rythme cardiaque élevé détecté. Préparez-vous à l'impact.</span>
-
-                          </div>
-
-                      </SlideDown>
-
-                  </div>
-
-      
-
-                  <div className="w-full flex justify-between items-end text-[10px] font-mono text-white/40">
-
-                      <span>COORDINATES: 48.8566° N, 2.3522° E</span>
-
-                      <span>SCROLL TO DESCEND</span>
-
-                  </div>
-
-              </div>
-
-            </section>
+          <div className="w-full flex justify-between items-end text-[10px] font-mono text-white/40">
+            <span>COORDINATES: 48.8566° N, 2.3522° E</span>
+            <span>SCROLL TO DESCEND</span>
+          </div>
+        </div>
+      </section>
 
       {/* --- MARQUEE SCROLLER --- */}
       <section className="border-b border-white/20 bg-primary text-black overflow-hidden py-2 md:py-3 relative z-20">
