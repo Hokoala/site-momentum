@@ -7,7 +7,7 @@ const menuItems = [
   { label: "HOME", href: "/" },
   { label: "DESCRIPTION", href: "#Description" },
   { label: "CREATORS", href: "#Creators" },
-  { label: "STATS", href: "/statistiques" },
+  { label: "CLASSEMENT", href: "/classement" },
 ];
 
 export default function Footer() {
@@ -19,7 +19,7 @@ export default function Footer() {
         <div className="lg:col-span-2 border-r border-white/20 flex flex-col justify-between p-6 md:p-8">
           <div className="space-y-3">
             <p className="font-mono text-[10px] text-primary uppercase tracking-widest">
-              AGENCY: AIF-F STUDIOS
+              AGENCE: AIF-F STUDIOS
             </p>
             <p className="text-xs font-bold uppercase leading-relaxed max-w-sm text-white/70">
               Projet étudiant SAE 501. Une expérience immersive de parkour
