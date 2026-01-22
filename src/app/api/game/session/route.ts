@@ -26,16 +26,16 @@ export async function POST() {
     console.log(`Nouvelle session créée: ${sessionId}`);
 
     // Générer les URLs
-    const baseUrl = process.env.NEXT_PUBLIC_URL || "http://localhost:3000";
+    const baseUrl = process.env.NEXT_PUBLIC_URL;
 
     const player1JoinUrl = `${baseUrl}/game/join?session=${sessionId}&player=1&token=${player1Token}`;
     const player2JoinUrl = `${baseUrl}/game/join?session=${sessionId}&player=2&token=${player2Token}`;
 
     const player1QRCodeUrl = `${baseUrl}/api/game/qrcode?url=${encodeURIComponent(
-      player1JoinUrl
+      player1JoinUrl,
     )}`;
     const player2QRCodeUrl = `${baseUrl}/api/game/qrcode?url=${encodeURIComponent(
-      player2JoinUrl
+      player2JoinUrl,
     )}`;
 
     return NextResponse.json(
@@ -48,13 +48,13 @@ export async function POST() {
         player2QRCode: player2QRCodeUrl,
         expiresIn: 1800,
       },
-      { headers: corsHeaders }
+      { headers: corsHeaders },
     );
   } catch (error) {
     console.error("Erreur création session:", error);
     return NextResponse.json(
       { error: "Erreur lors de la création de la session" },
-      { status: 500, headers: corsHeaders }
+      { status: 500, headers: corsHeaders },
     );
   }
 }

@@ -1,85 +1,74 @@
 "use client";
 
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 
 const menuItems = [
   { label: "HOME", href: "/" },
   { label: "DESCRIPTION", href: "#Description" },
-  { label: "Creators", href: "#Creators" },
-  { label: "statistiques", href: "/statistiques" },
+  { label: "CREATORS", href: "#Creators" },
+  { label: "CLASSEMENT", href: "/classement" },
 ];
 
 export default function Footer() {
   return (
-    <footer className="relative w-full text-white">
-      {/* Bordure supérieure */}
-      <div className=""></div>
-
-      {/* Container principal */}
-      <div className="relative flex flex-col lg:flex-row">
-        {/* COLONNE GAUCHE */}
-        <div className="w-full lg:w-[35%] flex flex-col min-h-[300px] lg:min-h-[500px]">
-          {/* Texte en haut */}
-          <div className="px-6 md:px-12 border-y">
-            <p className="text-xs md:text-sm py-3.5">
-              UN PROJET IMAGINÉ ET DÉVELOPPÉ PAR
-              <br />
-              L'AGENCE AIF-F STUDIOS.
+    <footer className="relative w-full bg-black text-white border-t border-white/20">
+      {/* GRID CONTAINER */}
+      <div className="grid grid-cols-1 lg:grid-cols-4 min-h-[300px]">
+        {/* COL 1: IDENTITY */}
+        <div className="lg:col-span-2 border-r border-white/20 flex flex-col justify-between p-6 md:p-8">
+          <div className="space-y-3">
+            <p className="font-mono text-[10px] text-primary uppercase tracking-widest">
+              AGENCE: AIF-F STUDIOS
+            </p>
+            <p className="text-xs font-bold uppercase leading-relaxed max-w-sm text-white/70">
+              Projet étudiant SAE 501. Une expérience immersive de parkour
+              rythmique développée avec Next.js et Unity.
             </p>
           </div>
 
-          {/* Logo MOMENTUM en bas */}
-          <div className="mt-auto p-4 md:p-8 ">
-            <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-[8rem] font-bold tracking-tight leading-[0.9]">
+          <div className="mt-8 lg:mt-0">
+            <h1 className="text-[12vw] lg:text-[6rem] font-black leading-[0.8] tracking-tighter select-none text-white mix-blend-difference">
               MOMENTUM
             </h1>
           </div>
         </div>
 
-        {/* COLONNE DROITE */}
-        <div className="flex-1 flex flex-col">
-          {/* Navigation en haut */}
-          <div className="border-y border-l px-4 md:px-12 py-4 md:py-6">
-            <nav className="flex flex-wrap justify-center lg:justify-end gap-4 md:gap-8 lg:gap-16">
-              {menuItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="text-xs md:text-sm tracking-widest hover:text-[#C0FE04] transition-colors"
-                >
+        {/* COL 2: LINKS */}
+        <div className="border-r border-white/20 bg-neutral-900/10">
+          <div className="flex flex-col h-full">
+            {menuItems.map((item, index) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="flex-1 flex items-center justify-between px-6 border-b border-white/10 hover:bg-white hover:text-black transition-colors group"
+              >
+                <span className="text-sm font-bold uppercase tracking-wider">
                   {item.label}
-                </Link>
-              ))}
-            </nav>
+                </span>
+                <ArrowUpRight className="opacity-0 group-hover:opacity-100 transition-opacity w-4 h-4" />
+              </Link>
+            ))}
           </div>
+        </div>
 
-          {/* Section inférieure - divisée en 3 parties */}
-          <div className="relative flex flex-col md:flex-row flex-1 min-h-[250px] md:min-h-[400px]">
-            {/* Partie gauche vide (pour l'espace) - cachée sur mobile */}
-            <div className="hidden md:block flex-1"></div>
+        {/* COL 3: PATTERN & INFO */}
+        <div className="flex flex-col">
+          {/* Pattern Block */}
+          <div className="flex-1 bg-[repeating-linear-gradient(45deg,#111,#111_10px,#C0FE04_10px,#C0FE04_20px)] border-b border-white/20"></div>
 
-            {/* Pattern diagonal au centre avec bordure à droite */}
-            <div className="border-b md:border-b-0 md:border-r">
-              <div
-                className="w-full md:w-[200px] lg:w-[280px] h-[100px] md:h-full"
-                style={{
-                  background: `repeating-linear-gradient(
-                                        45deg,
-                                        #C0FE04,
-                                        #C0FE04 28px,
-                                        #000000 28px,
-                                        #000000 56px
-                                    )`,
-                }}
-              ></div>
-            </div>
-
-            {/* Partie droite avec le copyright */}
-            <div className="flex-1 flex items-end justify-center md:justify-end p-6 md:p-12">
-              <p className="text-xs text-center md:text-right leading-relaxed tracking-wide">
-                @ 2025 SITE DE LA SAE 501 PAR
-                <br />
-                LES ÉTUDIANTS DE MMI
+          {/* Info Block */}
+          <div className="p-6 flex flex-col justify-end h-1/2 bg-black">
+            <div className="space-y-1 text-right">
+              <p className="font-mono text-[10px] text-white/40">
+                VERSION: 2.0.4-RC
+              </p>
+              <p className="font-mono text-[10px] text-white/40">
+                SERVER: PARIS-EU-WEST
+              </p>
+              <div className="w-full h-px bg-white/20 my-2"></div>
+              <p className="font-bold text-[10px] uppercase tracking-widest">
+                © 2025 BUT MMI TROYES
               </p>
             </div>
           </div>
