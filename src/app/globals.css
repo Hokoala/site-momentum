@@ -91,6 +91,7 @@ html.lenis body {
   --momentum-white: #FFFFFF;
 
   /* Base - Dark theme as default */
+  --radius: 0rem;
   --background: #000000;
   --foreground: #FFFFFF;
 
