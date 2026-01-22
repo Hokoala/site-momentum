@@ -4,21 +4,17 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
-import { Zap, Shield, Trophy, Target, Crosshair } from "lucide-react";
+import { Zap, Shield, Trophy, Crosshair } from "lucide-react";
 
 export default function AnimationImage() {
     const containerRef = useRef<HTMLDivElement>(null);
-    
-    // Refs for animations
-    const cardsRef = useRef<HTMLDivElement>(null);
-    const targetRef = useRef<HTMLDivElement>(null);
-    const textRef = useRef<HTMLDivElement>(null);
+    const panel1Ref = useRef<HTMLDivElement>(null);
+    const panel2Ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const initAnimation = () => {
             gsap.registerPlugin(ScrollTrigger);
 
-            // 1. Setup Pinning for Panels
             const panels = containerRef.current?.querySelectorAll(".panel");
             if (panels) {
                 panels.forEach((panel) => {
@@ -33,45 +29,34 @@ export default function AnimationImage() {
                 });
             }
 
-            // 2. Animations "Vivant" (Continuous)
-            
-            // Panel 1: Floating Cards (Float up/down independently)
-            if (cardsRef.current) {
-                const cards = cardsRef.current.children;
-                Array.from(cards).forEach((card, i) => {
-                    gsap.to(card, {
-                        y: -15 - (i * 5), // Different distances
-                        duration: 2 + (i * 0.5), // Different speeds
-                        repeat: -1,
-                        yoyo: true,
-                        ease: "sine.inOut",
-                        delay: i * 0.2 // Stagger start
-                    });
-                });
-            }
-
-            // Panel 2: Rotating Target & Pulsing Text
-            if (targetRef.current) {
-                gsap.to(targetRef.current, {
-                    rotation: 360,
-                    duration: 20,
-                    repeat: -1,
-                    ease: "linear"
-                });
-            }
-            
-            if (textRef.current) {
-                gsap.fromTo(textRef.current,
-                    { scale: 0.95, opacity: 0.9 },
+            // Animation Panel 1 (Bento Reveal)
+            if (panel1Ref.current) {
+                const bentoItems = panel1Ref.current.querySelectorAll(".bento-item");
+                gsap.fromTo(bentoItems, 
+                    { y: 100, opacity: 0 },
                     { 
-                        scale: 1.05, 
+                        y: 0, 
                         opacity: 1, 
-                        duration: 3, 
-                        repeat: -1, 
-                        yoyo: true, 
-                        ease: "sine.inOut" 
+                        stagger: 0.2, 
+                        duration: 1,
+                        ease: "power3.out",
+                        scrollTrigger: {
+                            trigger: panel1Ref.current,
+                            start: "top center",
+                            end: "center center",
+                            scrub: 1
+                        }
                     }
                 );
+            }
+
+            // Animation Panel 2 (Versus Split)
+            if (panel2Ref.current) {
+                const leftSide = panel2Ref.current.querySelector(".split-left");
+                const rightSide = panel2Ref.current.querySelector(".split-right");
+                
+                gsap.fromTo(leftSide, { x: "-50%" }, { x: "0%", duration: 1, ease: "power2.out", scrollTrigger: { trigger: panel2Ref.current, start: "top bottom", end: "top top", scrub: 1 }});
+                gsap.fromTo(rightSide, { x: "50%" }, { x: "0%", duration: 1, ease: "power2.out", scrollTrigger: { trigger: panel2Ref.current, start: "top bottom", end: "top top", scrub: 1 }});
             }
         };
 
@@ -87,108 +72,119 @@ export default function AnimationImage() {
     return (
         <div ref={containerRef} className="w-full bg-black">
             
-            {/* --- PANEL 1: MODULES FLOTTANTS --- */}
-            <section className="panel relative w-full h-screen overflow-hidden flex items-center justify-center">
-                {/* Background Image with Zoom Effect */}
+            {/* --- PANEL 1: BENTO GRID (Darker Version) --- */}
+            <section ref={panel1Ref} className="panel relative w-full h-screen overflow-hidden flex items-center justify-center p-6 md:p-12">
                 <div className="absolute inset-0 z-0">
                     <Image
                         src="/assets/Image-animation.png"
                         alt="Gameplay Momentum"
                         fill
-                        className="object-cover"
+                        className="object-cover opacity-60" // Darker opacity
                         priority
                     />
-                    <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]"></div>
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/20 to-black/80"></div>
+                    <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
                 </div>
 
-                {/* Container for Floating Modules */}
-                <div ref={cardsRef} className="relative z-10 w-full max-w-6xl px-6 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-12">
+                <div className="relative z-10 w-full max-w-7xl grid grid-cols-1 md:grid-cols-3 gap-4 h-full md:h-auto">
                     
-                    {/* Module 1: COURIR */}
-                    <div className="bg-black/40 backdrop-blur-md border border-white/10 p-8 rounded-xl flex flex-col items-center text-center group hover:bg-white/10 transition-colors duration-500 hover:border-primary/50">
-                        <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
-                            <Zap className="w-8 h-8 text-primary group-hover:drop-shadow-[0_0_10px_rgba(192,254,4,0.8)]" />
+                    {/* Item 1: COURIR */}
+                    <div className="bento-item bg-black/60 backdrop-blur-md border border-white/10 p-8 flex flex-col justify-between group hover:border-primary/50 transition-all duration-500 h-[30vh] md:h-[60vh]">
+                        <div className="flex justify-between items-start">
+                            <span className="text-[10px] font-mono text-white/40 uppercase tracking-widest border border-white/10 px-2 py-1">01 // SPEED</span>
+                            <Zap className="w-6 h-6 text-white/40 group-hover:text-primary transition-colors" />
                         </div>
-                        <h3 className="text-3xl font-black italic text-white mb-2 tracking-tighter">COURIR</h3>
-                        <p className="text-xs text-white/60 font-mono uppercase tracking-widest">Vitesse Maximale</p>
-                        <div className="w-full h-px bg-gradient-to-r from-transparent via-white/20 to-transparent mt-6"></div>
+                        <div>
+                            <h3 className="text-4xl md:text-6xl font-black text-white mb-4 uppercase tracking-tighter">Courir</h3>
+                            <p className="text-sm text-white/60 font-mono leading-relaxed border-l-2 border-primary/50 pl-4">
+                                Vitesse terminale requise. <br/>
+                                Ne jamais ralentir.
+                            </p>
+                        </div>
+                        <div className="w-full h-1 bg-white/10 mt-8 overflow-hidden">
+                            <div className="h-full bg-primary w-0 group-hover:w-full transition-all duration-700 ease-out"></div>
+                        </div>
                     </div>
 
-                    {/* Module 2: SURVIVRE (Offset visually) */}
-                    <div className="md:mt-12 bg-black/40 backdrop-blur-md border border-white/10 p-8 rounded-xl flex flex-col items-center text-center group hover:bg-white/10 transition-colors duration-500 hover:border-red-500/50">
-                        <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
-                            <Shield className="w-8 h-8 text-white group-hover:text-red-500 group-hover:drop-shadow-[0_0_10px_rgba(239,68,68,0.8)] transition-colors" />
+                    {/* Item 2: SURVIVRE */}
+                    <div className="bento-item bg-black/60 backdrop-blur-md border border-white/10 p-8 flex flex-col justify-between group hover:border-red-500/50 transition-all duration-500 h-[30vh] md:h-[60vh] md:mt-12">
+                        <div className="flex justify-between items-start">
+                            <span className="text-[10px] font-mono text-white/40 uppercase tracking-widest border border-white/10 px-2 py-1">02 // SURVIVAL</span>
+                            <Shield className="w-6 h-6 text-white/40 group-hover:text-red-500 transition-colors" />
                         </div>
-                        <h3 className="text-3xl font-black italic text-white mb-2 tracking-tighter">SURVIVRE</h3>
-                        <p className="text-xs text-white/60 font-mono uppercase tracking-widest">Éviter les pièges</p>
-                        <div className="w-full h-px bg-gradient-to-r from-transparent via-white/20 to-transparent mt-6"></div>
+                        <div>
+                            <h3 className="text-4xl md:text-6xl font-black text-white mb-4 uppercase tracking-tighter">Survivre</h3>
+                            <p className="text-sm text-white/60 font-mono leading-relaxed border-l-2 border-red-500/50 pl-4">
+                                Éviter les obstacles. <br/>
+                                La mort est instantanée.
+                            </p>
+                        </div>
+                        <div className="w-full h-1 bg-white/10 mt-8 overflow-hidden">
+                            <div className="h-full bg-red-500 w-0 group-hover:w-full transition-all duration-700 ease-out"></div>
+                        </div>
                     </div>
 
-                    {/* Module 3: GAGNER */}
-                    <div className="bg-black/40 backdrop-blur-md border border-white/10 p-8 rounded-xl flex flex-col items-center text-center group hover:bg-white/10 transition-colors duration-500 hover:border-primary/50">
-                        <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
-                            <Trophy className="w-8 h-8 text-primary group-hover:drop-shadow-[0_0_10px_rgba(192,254,4,0.8)]" />
+                    {/* Item 3: GAGNER */}
+                    <div className="bento-item bg-black/60 backdrop-blur-md border border-white/10 p-8 flex flex-col justify-between group hover:border-primary/50 transition-all duration-500 h-[30vh] md:h-[60vh] md:mt-24">
+                        <div className="flex justify-between items-start">
+                            <span className="text-[10px] font-mono text-white/40 uppercase tracking-widest border border-white/10 px-2 py-1">03 // VICTORY</span>
+                            <Trophy className="w-6 h-6 text-white/40 group-hover:text-primary transition-colors" />
                         </div>
-                        <h3 className="text-3xl font-black italic text-white mb-2 tracking-tighter">GAGNER</h3>
-                        <p className="text-xs text-white/60 font-mono uppercase tracking-widest">Dominer le classement</p>
-                        <div className="w-full h-px bg-gradient-to-r from-transparent via-white/20 to-transparent mt-6"></div>
+                        <div>
+                            <h3 className="text-4xl md:text-6xl font-black text-white mb-4 uppercase tracking-tighter">Gagner</h3>
+                            <p className="text-sm text-white/60 font-mono leading-relaxed border-l-2 border-primary/50 pl-4">
+                                Dominer le classement. <br/>
+                                Devenir une légende.
+                            </p>
+                        </div>
+                        <div className="w-full h-1 bg-white/10 mt-8 overflow-hidden">
+                            <div className="h-full bg-primary w-0 group-hover:w-full transition-all duration-700 ease-out"></div>
+                        </div>
                     </div>
-
                 </div>
             </section>
 
-
-            {/* --- PANEL 2: ACTIVE TARGETING --- */}
-            <section className="panel relative w-full h-screen overflow-hidden flex items-center justify-center">
+            {/* --- PANEL 2: TECH SPLIT (Darker Version) --- */}
+            <section ref={panel2Ref} className="panel relative w-full h-screen overflow-hidden flex">
                  <div className="absolute inset-0 z-0">
                     <Image
                         src="/assets/Image2-animation.png"
                         alt="Marathon animation"
                         fill
-                        className="object-cover"
+                        className="object-cover opacity-50"
                         priority
                     />
-                    {/* Dark Vignette */}
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,black_100%)] opacity-80"></div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-black via-transparent to-black opacity-80"></div>
                 </div>
 
-                {/* Animated HUD / Target */}
-                <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
-                    
-                    {/* Rotating Outer Ring */}
-                    <div ref={targetRef} className="absolute w-[600px] h-[600px] border border-white/5 rounded-full flex items-center justify-center pointer-events-none">
-                        <div className="absolute top-0 w-1 h-4 bg-primary"></div>
-                        <div className="absolute bottom-0 w-1 h-4 bg-primary"></div>
-                        <div className="absolute left-0 w-4 h-1 bg-primary"></div>
-                        <div className="absolute right-0 w-4 h-1 bg-primary"></div>
-                        <div className="w-[580px] h-[580px] border border-dashed border-white/10 rounded-full"></div>
-                    </div>
-
-                    {/* Central Content */}
-                    <div ref={textRef} className="relative z-20 text-center mix-blend-overlay">
-                        <Target className="w-12 h-12 mx-auto mb-6 text-white" />
-                        
-                        <h2 className="text-5xl md:text-8xl font-black text-white uppercase tracking-tighter leading-none mb-2">
+                <div className="split-left w-1/2 h-full border-r border-white/10 flex flex-col justify-center items-end pr-8 md:pr-16 relative z-10 bg-black/40 backdrop-blur-sm">
+                    <div className="text-right">
+                        <div className="flex items-center justify-end gap-2 mb-4 text-primary font-mono text-xs tracking-widest">
+                            TARGET_ACQUIRED <Crosshair className="w-4 h-4 animate-spin-slow" />
+                        </div>
+                        <h2 className="text-6xl md:text-9xl font-black text-white uppercase tracking-tighter leading-none drop-shadow-2xl">
                             Affrontez
                         </h2>
-                        <h2 className="text-5xl md:text-8xl font-black text-transparent stroke-white text-stroke uppercase tracking-tighter leading-none">
+                    </div>
+                </div>
+
+                <div className="split-right w-1/2 h-full flex flex-col justify-center items-start pl-8 md:pl-16 relative z-10 bg-black/40 backdrop-blur-sm">
+                    <div>
+                        <h2 className="text-6xl md:text-9xl font-black text-transparent stroke-white text-stroke uppercase tracking-tighter leading-none mb-4 drop-shadow-2xl">
                             Vos Rivaux
                         </h2>
-                    </div>
-
-                    {/* Floating HUD Elements */}
-                    <div className="absolute top-1/2 left-10 md:left-20 -translate-y-1/2 hidden md:flex flex-col gap-4 opacity-50">
-                        <div className="flex items-center gap-2 font-mono text-xs text-white">
-                            <Crosshair className="w-4 h-4 text-primary" /> TARGET ACQUIRED
+                        <div className="flex items-center gap-4">
+                            <div className="h-px w-12 bg-primary"></div>
+                            <p className="text-white/60 font-mono text-xs uppercase tracking-widest">
+                                Multiplayer Arena Protocol
+                            </p>
                         </div>
-                        <div className="h-32 w-px bg-gradient-to-b from-transparent via-white/50 to-transparent"></div>
                     </div>
+                </div>
 
-                    <div className="absolute top-1/2 right-10 md:right-20 -translate-y-1/2 hidden md:flex flex-col gap-4 items-end opacity-50">
-                        <div className="flex items-center gap-2 font-mono text-xs text-white">
-                            LIVE FEED <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
-                        </div>
-                        <div className="h-32 w-px bg-gradient-to-b from-transparent via-white/50 to-transparent"></div>
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
+                    <div className="w-16 h-16 border border-white/20 rotate-45 flex items-center justify-center bg-black/80">
+                        <div className="w-2 h-2 bg-primary rounded-full animate-ping"></div>
                     </div>
                 </div>
             </section>
