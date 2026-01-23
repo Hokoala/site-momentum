@@ -406,11 +406,11 @@ export default function LeaderboardPage() {
                         <div className="hidden md:flex col-span-2 justify-end items-center gap-2">
                           {entry.hasFinished ? (
                             <span className="text-[10px] font-bold text-black bg-primary px-2 py-1 uppercase">
-                              Terminé
+                              Finished
                             </span>
                           ) : (
                             <span className="text-[10px] font-mono text-white/30 group-hover:text-black/30 uppercase">
-                              Échoué
+                              Failed
                             </span>
                           )}
                         </div>

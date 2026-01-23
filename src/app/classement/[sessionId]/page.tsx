@@ -222,7 +222,7 @@ export default function SessionDetailsPage() {
               </div>
               <div className="flex items-center justify-between border-b border-white/10 pb-2">
                 <span className="text-[10px] font-mono text-white/40 uppercase flex items-center gap-2">
-                  <Clock className="w-3 h-3" /> DURÉE
+                  <Clock className="w-3 h-3" /> DURATION
                 </span>
                 <span className="text-sm font-bold">
                   {session.duration ? formatDuration(session.duration) : "N/A"}
@@ -230,7 +230,7 @@ export default function SessionDetailsPage() {
               </div>
               <div className="flex items-center justify-between border-b border-white/10 pb-2">
                 <span className="text-[10px] font-mono text-white/40 uppercase flex items-center gap-2">
-                  <MapPin className="w-3 h-3" /> SECTEUR
+                  <MapPin className="w-3 h-3" /> SECTOR
                 </span>
                 <span className="text-sm font-bold">SECTOR_01</span>
               </div>
@@ -240,7 +240,7 @@ export default function SessionDetailsPage() {
             {session.winner && (
               <div className="bg-primary p-6 text-black mt-8">
                 <span className="text-[10px] font-mono uppercase font-bold tracking-widest block mb-2">
-                  VAINQUEUR DE LA SESSION
+                  WINNER OF THE SESSION
                 </span>
                 <div className="flex items-center gap-3">
                   <Trophy className="w-8 h-8" />
@@ -263,20 +263,20 @@ export default function SessionDetailsPage() {
           <SlideDown>
             <div className="flex items-end justify-between mb-8 pb-4 border-b border-white/20">
               <h2 className="text-3xl font-black uppercase tracking-tighter">
-                RAPPORT <span className="text-white/30">DE COURSE</span>
+                RACE <span className="text-white/30">REPORT</span>
               </h2>
               <span className="text-[10px] font-mono text-white/40 uppercase">
-                {session.scores.length} PARTICIPANTS ENREGISTRÉS
+                {session.scores.length} REGISTERED PARTICIPANTS
               </span>
             </div>
 
             {/* Tableau des scores */}
             <div className="w-full">
               <div className="grid grid-cols-6 gap-4 p-4 text-[10px] font-mono text-white/40 uppercase tracking-widest border-b border-white/10">
-                <div className="col-span-2">Pilote</div>
-                <div className="text-right">Score Total</div>
+                <div className="col-span-2">Runner</div>
+                <div className="text-right">Total Score</div>
                 <div className="text-right">Distance</div>
-                <div className="text-right">Survie</div>
+                <div className="text-right">Survival</div>
                 <div className="text-center">Statut</div>
               </div>
 
