@@ -95,10 +95,10 @@ export default function AnimationImage() {
                             <Zap className="w-6 h-6 text-white/40 group-hover:text-primary transition-colors" />
                         </div>
                         <div>
-                            <h3 className="text-4xl md:text-6xl font-black text-white mb-4 uppercase tracking-tighter">Courir</h3>
+                            <h3 className="text-4xl md:text-6xl font-black text-white mb-4 uppercase tracking-tighter">Run</h3>
                             <p className="text-sm text-white/60 font-mono leading-relaxed border-l-2 border-primary/50 pl-4">
-                                Vitesse terminale requise. <br/>
-                                Ne jamais ralentir.
+                                Maximum speed required.<br/>
+                                Never slow down.
                             </p>
                         </div>
                         <div className="w-full h-1 bg-white/10 mt-8 overflow-hidden">
@@ -113,10 +113,10 @@ export default function AnimationImage() {
                             <Shield className="w-6 h-6 text-white/40 group-hover:text-red-500 transition-colors" />
                         </div>
                         <div>
-                            <h3 className="text-4xl md:text-6xl font-black text-white mb-4 uppercase tracking-tighter">Survivre</h3>
+                            <h3 className="text-4xl md:text-6xl font-black text-white mb-4 uppercase tracking-tighter">Survive</h3>
                             <p className="text-sm text-white/60 font-mono leading-relaxed border-l-2 border-red-500/50 pl-4">
-                                Éviter les obstacles. <br/>
-                                La mort est instantanée.
+                                Avoid obstacles.<br/>
+                                Death is immediate.
                             </p>
                         </div>
                         <div className="w-full h-1 bg-white/10 mt-8 overflow-hidden">
@@ -131,10 +131,10 @@ export default function AnimationImage() {
                             <Trophy className="w-6 h-6 text-white/40 group-hover:text-primary transition-colors" />
                         </div>
                         <div>
-                            <h3 className="text-4xl md:text-6xl font-black text-white mb-4 uppercase tracking-tighter">Gagner</h3>
+                            <h3 className="text-4xl md:text-6xl font-black text-white mb-4 uppercase tracking-tighter">Win</h3>
                             <p className="text-sm text-white/60 font-mono leading-relaxed border-l-2 border-primary/50 pl-4">
-                                Dominer le classement. <br/>
-                                Devenir une légende.
+                                Dominate the leaderboard.<br/>
+                                Become a legend.
                             </p>
                         </div>
                         <div className="w-full h-1 bg-white/10 mt-8 overflow-hidden">
@@ -157,21 +157,21 @@ export default function AnimationImage() {
                     <div className="absolute inset-0 bg-gradient-to-r from-black via-transparent to-black opacity-80"></div>
                 </div>
 
-                <div className="split-left w-1/2 h-full border-r border-white/10 flex flex-col justify-center items-end pr-8 md:pr-16 relative z-10 bg-black/40 backdrop-blur-sm">
+                <div className="split-left w-1/2 h-full border-r border-white/10 flex flex-col justify-center items-end pr-8 md:pr-16 relative z-10 bg-black/40 backdrop-blur-sm pb-6">
                     <div className="text-right">
                         <div className="flex items-center justify-end gap-2 mb-4 text-primary font-mono text-xs tracking-widest">
                             TARGET_ACQUIRED <Crosshair className="w-4 h-4 animate-spin-slow" />
                         </div>
-                        <h2 className="text-6xl md:text-9xl font-black text-white uppercase tracking-tighter leading-none drop-shadow-2xl">
-                            Affrontez
+                        <h2 className="text-6xl md:text-9xl font-black text-white uppercase whitespace-nowrap tracking-tighter leading-none drop-shadow-2xl">
+                            Face-off
                         </h2>
                     </div>
                 </div>
 
-                <div className="split-right w-1/2 h-full flex flex-col justify-center items-start pl-8 md:pl-16 relative z-10 bg-black/40 backdrop-blur-sm">
+                <div className="split-right w-1/2 h-full flex flex-col justify-center items-start pl-8 md:pl-16 relative z-10 bg-black/40 backdrop-blur-sm pt-6">
                     <div>
-                        <h2 className="text-6xl md:text-9xl font-black text-transparent stroke-white text-stroke uppercase tracking-tighter leading-none mb-4 drop-shadow-2xl">
-                            Vos Rivaux
+                        <h2 className="text-6xl md:text-9xl font-black text-white uppercase whitespace-nowrap tracking-tighter leading-none drop-shadow-2xl">
+                            Your Rivals
                         </h2>
                         <div className="flex items-center gap-4">
                             <div className="h-px w-12 bg-primary"></div>
