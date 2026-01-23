@@ -9,7 +9,7 @@ const menuItems = [
   { label: "HOME", href: "/" },
   { label: "DESCRIPTION", href: "/#Description" },
   { label: "CREATORS", href: "/#Creators" },
-  { label: "CLASSEMENT", href: "/classement" },
+  { label: "LEADERBOARD", href: "/classement" },
 ];
 
 export default function Header() {
@@ -53,7 +53,7 @@ export default function Header() {
             href="/game/join"
             className="h-full flex items-center px-8 bg-white text-black text-xs font-bold uppercase tracking-widest hover:bg-primary transition-colors border-l border-white/20"
           >
-            [ JOUER ]
+            [ PLAY ]
           </Link>
         </div>
 

@@ -67,12 +67,12 @@ function JoinGameForm() {
     e.preventDefault();
 
     if (!pseudo || pseudo.trim().length < 3) {
-      setError("ERREUR: ID TROP COURT (MIN 3 CAR.)");
+      setError("ERROR: ID TOO SHORT (MIN 3 CHAR.)");
       return;
     }
 
     if (!sessionId || !token) {
-      setError("ERREUR: PARAMÈTRES DE SESSION MANQUANTS");
+      setError("ERROR: MISSING SESSION SETTINGS");
       return;
     }
 
@@ -99,10 +99,10 @@ function JoinGameForm() {
         console.log("[JOIN] Connexion réussie");
         setSuccess(true);
       } else {
-        setError(`ERREUR: ${data.error || "ACCÈS REFUSÉ"}`);
+        setError(`ERROR: ${data.error || "ACCESS DENIED"}`);
       }
     } catch (err) {
-      setError("ERREUR: ÉCHEC DE CONNEXION AU SERVEUR");
+      setError("ERROR: SERVER CONNECTION FAILED");
     } finally {
       setLoading(false);
     }
@@ -200,19 +200,19 @@ function JoinGameForm() {
           <div className="absolute inset-0 bg-[repeating-linear-gradient(45deg,#000,#000_10px,#111_10px,#111_11px)] opacity-20 -z-10"></div>
           <div className="w-full max-w-md space-y-8">
               <div className="space-y-2">
-                  <h2 className="text-2xl font-bold uppercase tracking-tight flex items-center gap-2"><span className="w-2 h-6 bg-primary block"></span>AUTHENTIFICATION</h2>
-                  <p className="text-white/40 text-xs font-mono uppercase tracking-widest pl-4">Veuillez vous identifier pour accéder au lobby</p>
+                  <h2 className="text-2xl font-bold uppercase tracking-tight flex items-center gap-2"><span className="w-2 h-6 bg-primary block"></span>AUTHENTICATION</h2>
+                  <p className="text-white/40 text-xs font-mono uppercase tracking-widest pl-4">Please log in to access the lobby</p>
               </div>
               <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="space-y-2">
-                      <label htmlFor="pseudo" className="text-[10px] font-mono text-primary uppercase tracking-widest">IDENTIFIANT_JOUEUR</label>
+                      <label htmlFor="pseudo" className="text-[10px] font-mono text-primary uppercase tracking-widest">PLAYER_IDENTIFIER</label>
                       <div className="relative group">
                           <input
                             type="text"
                             id="pseudo"
                             value={pseudo}
                             onChange={(e) => setPseudo(e.target.value.toUpperCase())}
-                            placeholder="ENTREZ VOTRE PSEUDO..."
+                            placeholder="ENTER YOUR USERNAME..."
                             className="w-full bg-black border border-white/20 p-4 text-sm text-white placeholder-white/20 focus:border-primary focus:outline-none uppercase font-mono transition-all group-hover:border-white/40"
                             maxLength={12} minLength={3} required autoFocus autoComplete="off"
                           />
@@ -221,7 +221,7 @@ function JoinGameForm() {
                   </div>
                   {error && <div className="bg-red-500/10 border border-red-500/50 text-red-500 p-4 text-xs font-mono flex items-start gap-3"><AlertTriangle className="w-4 h-4 shrink-0" />{error}</div>}
                   <button type="submit" disabled={loading} className="w-full bg-white text-black font-black uppercase text-sm p-4 hover:bg-primary transition-colors disabled:opacity-50 flex items-center justify-center gap-2 group">
-                    {loading ? <><Loader2 className="w-4 h-4 animate-spin" /> TRAITEMENT...</> : <>INITIALISER LA CONNEXION <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" /></>}
+                    {loading ? <><Loader2 className="w-4 h-4 animate-spin" /> TRAITEMENT...</> : <>INITIALIZE CONNECTION <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" /></>}
                   </button>
               </form>
               <div className="pt-8 border-t border-white/10 flex justify-between items-center text-[10px] font-mono text-white/30">

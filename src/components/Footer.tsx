@@ -7,7 +7,7 @@ const menuItems = [
   { label: "HOME", href: "/" },
   { label: "DESCRIPTION", href: "#Description" },
   { label: "CREATORS", href: "#Creators" },
-  { label: "CLASSEMENT", href: "/classement" },
+  { label: "LEADERBOARD", href: "/classement" },
 ];
 
 export default function Footer() {

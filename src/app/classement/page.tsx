@@ -90,7 +90,7 @@ export default function LeaderboardPage() {
   });
 
   const maps = [
-    { name: "", displayName: "TOUTES LES CARTES" },
+    { name: "", displayName: "ALL MAPS" },
     { name: "main", displayName: "MAIN ARENA" },
   ];
 
@@ -103,7 +103,7 @@ export default function LeaderboardPage() {
 
   const sortOptions = [
     { value: "totalScore", label: "SCORE" },
-    { value: "survivalTime", label: "SURVIE" },
+    { value: "survivalTime", label: "SURVIVAL" },
     { value: "distanceTraveled", label: "DISTANCE" },
     { value: "collectiblesCollected", label: "COLLECTIBLES" },
   ];
@@ -203,7 +203,7 @@ export default function LeaderboardPage() {
               PAGE_ID: LEADERBOARD
             </div>
             <h1 className="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-none mb-2">
-              CLASSEMENT <br /> <span className="text-primary">GLOBAL</span>
+              GLOBAL <br /> <span className="text-primary">RANKING</span>
             </h1>
           </div>
 
@@ -219,7 +219,7 @@ export default function LeaderboardPage() {
             <div className="space-y-4 mt-8">
               <div>
                 <p className="text-[10px] font-mono opacity-60 uppercase">
-                  Total Joueurs
+                  Total Players
                 </p>
                 <p className="text-4xl font-black tracking-tight">
                   {stats?.totalPlayers || 0}
@@ -228,7 +228,7 @@ export default function LeaderboardPage() {
               <div className="w-full h-px bg-black/20"></div>
               <div>
                 <p className="text-[10px] font-mono opacity-60 uppercase">
-                  Meilleur Score
+                  Best Score
                 </p>
                 <p className="text-4xl font-black tracking-tight">
                   {stats?.highestScore.toLocaleString() || 0}
@@ -254,7 +254,7 @@ export default function LeaderboardPage() {
                     : "bg-transparent text-white border-white/20 hover:border-white"
                 }`}
               >
-                [ Classement ]
+                [ Ranking ]
               </button>
               <button
                 onClick={() => setActiveTab("history")}
@@ -264,7 +264,7 @@ export default function LeaderboardPage() {
                     : "bg-transparent text-white border-white/20 hover:border-white"
                 }`}
               >
-                [ Historique ]
+                [ History ]
               </button>
             </div>
 
@@ -272,13 +272,13 @@ export default function LeaderboardPage() {
             {activeTab === "leaderboard" && (
               <div className="space-y-6 pt-6 border-t border-white/10">
                 <h3 className="text-xs font-mono text-primary uppercase tracking-widest flex items-center gap-2">
-                  <Settings className="w-3 h-3" /> Filtres
+                  <Settings className="w-3 h-3" /> Filters
                 </h3>
 
                 <div className="space-y-4">
                   <div>
                     <label className="text-[10px] font-mono text-white/50 uppercase block mb-2">
-                      Recherche
+                      Search
                     </label>
                     <input
                       type="text"
@@ -286,14 +286,14 @@ export default function LeaderboardPage() {
                       onChange={(e) =>
                         setFilters({ ...filters, playerName: e.target.value })
                       }
-                      placeholder="NOM DU JOUEUR..."
+                      placeholder="PLAYER NAME..."
                       className="w-full bg-black border border-white/20 p-3 text-xs text-white placeholder-white/20 focus:border-primary focus:outline-none uppercase font-mono"
                     />
                   </div>
 
                   <div>
                     <label className="text-[10px] font-mono text-white/50 uppercase block mb-2">
-                      Carte
+                      Map
                     </label>
                     <select
                       value={filters.mapName}
@@ -312,7 +312,7 @@ export default function LeaderboardPage() {
 
                   <div>
                     <label className="text-[10px] font-mono text-white/50 uppercase block mb-2">
-                      Tri
+                      Sort By
                     </label>
                     <select
                       value={filters.sortBy}
@@ -349,7 +349,7 @@ export default function LeaderboardPage() {
                 {/* Table Header */}
                 <div className="hidden md:grid grid-cols-12 gap-4 p-4 border-b border-white/20 text-[10px] font-mono text-white/40 uppercase tracking-widest">
                   <div className="col-span-1">#</div>
-                  <div className="col-span-4">Joueur / Map</div>
+                  <div className="col-span-4">Player / Map</div>
                   <div className="col-span-2 text-right">Score</div>
                   <div className="col-span-2 text-right">Stats</div>
                   <div className="col-span-2 text-right">Status</div>
@@ -429,7 +429,7 @@ export default function LeaderboardPage() {
                   </>
                 ) : (
                   <div className="p-20 text-center text-white/30 font-mono text-xs border-b border-white/10">
-                    AUCUNE DONNÉE TROUVÉE
+                    NO DATA FOUND
                   </div>
                 )}
               </div>

@@ -17,6 +17,7 @@ export default function RootLayout({
           src="https://analytics.mmi23f03.fr/script.js"
           data-website-id="dea9c242-82b6-4100-a66b-ce7445c70d38"
         />
+        <meta name="apple-mobile-web-app-title" content="Momentum" />
       </head>
       <body>
         <SmoothScroll />
