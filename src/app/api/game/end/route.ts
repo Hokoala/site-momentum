@@ -60,8 +60,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Vérifier que la partie est en cours
-    if (session.status !== "playing") {
+    // Vérifier que la partie est en cours ou déjà terminée (pour permettre le rejeu)
+    if (session.status !== "playing" && session.status !== "finished") {
       return NextResponse.json(
         {
           error: "La partie n'est pas en cours",
