@@ -20,7 +20,7 @@ export default function Header() {
       <div className="w-full h-14 md:h-16 flex items-center justify-between pr-0">
         {/* LOGO AREA */}
         <Link href="/" className="group flex items-center gap-3 h-full">
-          <div className="relative w-8 h-8 md:w-16 md:h-16 transition-transform duration-300">
+          <div className="relative w-14 h-14 md:w-16 md:h-16 transition-transform duration-300">
             <Image
               src="/logo.png"
               alt="Momentum Logo"
@@ -72,16 +72,16 @@ export default function Header() {
 
       {/* MOBILE MENU OVERLAY */}
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 top-14 md:top-16 bg-black z-40 flex flex-col">
+        <div className="fixed w-full top-14 md:top-16 bg-black z-40 flex flex-col">
           {menuItems.map((item, index) => (
             <Link
               key={item.href}
               href={item.href}
               onClick={() => setIsMobileMenuOpen(false)}
-              className="flex items-center justify-between p-5 border-b border-white/10 text-lg font-bold uppercase tracking-widest text-white hover:bg-white/5 group"
+              className="flex items-center justify-between p-5 border-b border-white/10 text-lg font-bold uppercase tracking-widest text-white hover:bg-white hover:text-black transition-colors group"
             >
               <span>{item.label}</span>
-              <span className="text-[10px] font-mono text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+              <span className="text-[10px] font-mono text-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
                 LINK_0{index + 1}
               </span>
             </Link>
