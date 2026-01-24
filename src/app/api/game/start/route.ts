@@ -60,10 +60,10 @@ export async function POST(request: NextRequest) {
     }
 
     // Vérifier que la partie n'est pas déjà démarrée
-    if (session.status !== "waiting") {
+    if (session.status !== "waiting" && session.status !== "finished") {
       return NextResponse.json(
         {
-          error: "La partie a déjà été démarrée ou est terminée",
+          error: "La partie est déjà en cours",
           status: session.status,
         },
         { status: 400, headers: corsHeaders }

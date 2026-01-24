@@ -1,12 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
-
-/**
- * Route protégée pour le back-office
- * Permet de modifier les paramètres du jeu
- * Nécessite une authentification
- */
+import { prisma } from "@/lib/prisma";
 
 export async function GET(request: NextRequest) {
   // Vérifier l'authentification
@@ -21,19 +16,26 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  // TODO: Récupérer les paramètres depuis MySQL
-  const gameSettings = {
-    difficulte: "normal",
-    vitesseJeu: 1.0,
-    dureeJour: 30,
-    dureeNuit: 15,
-  };
+  try {
+    let settings = await prisma.globalSettings.findUnique({
+      where: { id: 1 }
+    });
 
-  return NextResponse.json({
-    message: "Paramètres du jeu",
-    settings: gameSettings,
-    user: session.user,
-  });
+    if (!settings) {
+      settings = await prisma.globalSettings.create({
+        data: { id: 1, registrationsOpen: true }
+      });
+    }
+
+    return NextResponse.json({
+      settings
+    });
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Erreur récupération paramètres" },
+      { status: 500 }
+    );
+  }
 }
 
 export async function POST(request: NextRequest) {
@@ -51,16 +53,27 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const { difficulte, vitesseJeu, dureeJour, dureeNuit } = body;
+    const { registrationsOpen } = body;
 
-    // TODO: Sauvegarder les nouveaux paramètres dans MySQL
-    console.log("Modification des paramètres par", session.user.email, body);
+    const settings = await prisma.globalSettings.upsert({
+      where: { id: 1 },
+      update: {
+        registrationsOpen: registrationsOpen
+      },
+      create: {
+        id: 1,
+        registrationsOpen: registrationsOpen !== undefined ? registrationsOpen : true
+      }
+    });
+
+    console.log("Paramètres globaux mis à jour par", session.user.email, settings);
 
     return NextResponse.json({
       message: "Paramètres mis à jour avec succès",
-      settings: { difficulte, vitesseJeu, dureeJour, dureeNuit },
+      settings
     });
   } catch (error) {
+    console.error(error);
     return NextResponse.json(
       { error: "Erreur lors de la mise à jour des paramètres" },
       { status: 500 }

@@ -115,3 +115,11 @@ model Score {
   @@index([totalScore])
   @@map("score")
 }
+
+model GlobalSettings {
+  id                 Int      @id @default(1)
+  registrationsOpen  Boolean  @default(true)
+  updatedAt          DateTime @updatedAt
+
+  @@map("global_settings")
+}
