@@ -122,14 +122,13 @@ export default function Home() {
               >
                 <Link href="/game/join">
                   <Button className="rounded-none h-12 px-8 text-sm font-bold uppercase tracking-widest bg-primary text-black hover:bg-white hover:text-black border border-transparent hover:border-white transition-all duration-0">
-                    [ Initier le protocole ]
+                    [ Initialize the protocol ]
                   </Button>
                 </Link>
                 <div className="flex items-center gap-3 text-[10px] font-mono text-white/60 max-w-xs leading-relaxed">
                   <div className="w-1.5 h-1.5 bg-red-500 animate-pulse"></div>
-                  <span>
-                    ATTENTION: Rythme cardiaque élevé détecté. Préparez-vous à
-                    l'impact.
+                  <span className="w-60">
+                    WARNING: Elevated heart rate detected. Prepare for impact.
                   </span>
                 </div>
               </SlideDown>
@@ -182,7 +181,7 @@ export default function Home() {
                   01 // SYNOPSIS
                 </span>
                 <h2 className="text-2xl md:text-3xl font-bold uppercase leading-none tracking-tighter">
-                  Le Concept
+                  Concept
                 </h2>
               </div>
               <div className="hidden lg:block w-full h-px bg-white/20 my-8"></div>
@@ -199,42 +198,41 @@ export default function Home() {
               </div>
 
               <h3 className="text-xl md:text-3xl uppercase font-bold leading-tight mb-6 max-w-4xl">
-                "Laissez votre corps périr. <br />{" "}
+                "Let your body die. <br />
                 <span className="text-primary bg-white/5 px-2">
-                  Devenez un coureur.
-                </span>
-                "
+                  Become a runner.
+                </span>"
               </h3>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm text-neutral-400 font-light leading-relaxed">
                 <div>
                   <p className="mb-4">
-                    Momentum n'est pas qu'un jeu de course. C'est une expérience
-                    sensorielle où{" "}
-                    <strong className="text-white">lumière et ténèbres</strong>{" "}
-                    s'affrontent. Chaque saut, chaque glissade est rythmé par la
-                    musique.
+                    Momentum is not just a running game.<br/>
+                    It's a sensory experience where
+                    <strong className="text-white"> light and darkness </strong>
+                    clash.<br/>
+                    Every jump, every slide is set to the music.
                   </p>
                   <ul className="space-y-1.5 font-mono text-xs text-primary">
                     <li className="flex items-center gap-2">
-                      <span>[+]</span> 1V1 COMPETITIF
+                      <span>[+]</span> 1V1 COMPETITIVE
                     </li>
                     <li className="flex items-center gap-2">
-                      <span>[+]</span> PARKOUR PROCEDURAL
+                      <span>[+]</span> PROCEDURAL PARKOUR
                     </li>
                   </ul>
                 </div>
                 <div>
                   <p className="mb-4">
-                    Collectez des orbes pour survivre aux phases nocturnes.
-                    Sabotez votre adversaire. Il n'y a pas de seconde place,
-                    seulement des survivants.
+                    Collect orbs to survive during the night phases.<br/>
+                    Sabotage your opponent.<br/>
+                    There is no second place, only survivors.<br/>
                   </p>
                   <Link
                     href="/game/join"
                     className="inline-flex items-center gap-2 text-white border-b border-primary hover:text-primary transition-colors uppercase font-bold tracking-widest text-xs pb-1 cursor-none"
                   >
-                    Voir le gameplay <ArrowRight className="w-3 h-3" />
+                    Watch gameplay <ArrowRight className="w-3 h-3" />
                   </Link>
                 </div>
               </div>
@@ -353,12 +351,12 @@ export default function Home() {
           </div>
 
           <h2 className="text-3xl md:text-6xl font-black uppercase tracking-tighter mb-8 z-10">
-            Prêt à courir ?
+            Ready to run?
           </h2>
 
           <Link href="/game/join" className="z-10">
             <Button className="rounded-none h-14 px-12 text-base font-bold uppercase bg-white text-black hover:bg-primary hover:text-black transition-colors duration-0 border-2 border-transparent hover:border-black">
-              Rejoindre la session
+              Join session
             </Button>
           </Link>
 

@@ -11,7 +11,7 @@ export default function HeroTitre() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
             >
-                <p className="text-lg md:text-xl font-bold">Courez. Collectez La Lumière,<br/> sabotez votre rival et survivez à la nuit</p>
+                <p className="text-lg md:text-xl font-bold">Run. Collect Lights,<br/> sabotage your rival, and survive the night.</p>
 
             </motion.div>
 

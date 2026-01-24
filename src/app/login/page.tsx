@@ -64,7 +64,7 @@ export default function LoginPage() {
     <div className="min-h-screen bg-black flex items-center justify-center px-4">
       <div className="max-w-md w-full bg-white/5 border border-lime-400/20 p-8 rounded-lg">
         <h1 className="text-3xl font-bold text-lime-400 mb-6 text-center">
-          {isSignUp ? "Créer un compte" : "Connexion"}
+          {isSignUp ? "Create an account" : "Connexion"}
         </h1>
 
         {error && (
@@ -106,7 +106,7 @@ export default function LoginPage() {
 
           <div>
             <label htmlFor="password" className="block text-white/70 mb-2">
-              Mot de passe
+              Password
             </label>
             <input
               id="password"
@@ -127,8 +127,8 @@ export default function LoginPage() {
             {loading
               ? "Chargement..."
               : isSignUp
-              ? "S'inscrire"
-              : "Se connecter"}
+              ? "Sign In"
+              : "Log In"}
           </button>
         </form>
 
@@ -141,8 +141,8 @@ export default function LoginPage() {
             className="text-lime-400 hover:underline"
           >
             {isSignUp
-              ? "Déjà un compte ? Se connecter"
-              : "Pas de compte ? S'inscrire"}
+              ? "Already have an account? Log In"
+              : "Don't have an account? Sign In"}
           </button>
         </div>
       </div>
