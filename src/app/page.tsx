@@ -364,7 +364,6 @@ export default function Home() {
             <span>System Status: Stable</span>
           </div>
         </section>
-        <style jsx global></style>
       </main>
     </>
   );
