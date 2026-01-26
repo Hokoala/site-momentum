@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { useState, Suspense, useEffect } from "react";
 import Image from "next/image";
 import { Terminal, Shield, Cpu, ChevronRight, CheckCircle2, AlertTriangle, Loader2, Play } from "lucide-react";
+import { validatePseudo, getErrorMessage } from "@/lib/pseudo-validator";
 
 function JoinGameForm() {
   const searchParams = useSearchParams();
@@ -66,8 +67,13 @@ function JoinGameForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!pseudo || pseudo.trim().length < 3) {
-      setError("ERROR: ID TOO SHORT (MIN 3 CHAR.)");
+    // Validation côté client avec le validateur
+    const validation = validatePseudo(pseudo);
+    if (!validation.isValid) {
+      const errorMessage = validation.errors
+        .map((err) => getErrorMessage(err, "en"))
+        .join(" | ");
+      setError(`ERROR: ${errorMessage.toUpperCase()}`);
       return;
     }
 
@@ -80,7 +86,7 @@ function JoinGameForm() {
     setError("");
 
     try {
-      console.log(`[JOIN] Tentative de connexion pour ${pseudo}...`);
+      console.log(`[JOIN] Tentative de connexion pour ${validation.sanitizedPseudo}...`);
       const response = await fetch("/api/game/players", {
         method: "POST",
         headers: {
@@ -89,7 +95,7 @@ function JoinGameForm() {
         body: JSON.stringify({
           sessionId,
           playerToken: token,
-          pseudo: pseudo.trim(),
+          pseudo: validation.sanitizedPseudo,
         }),
       });
 
