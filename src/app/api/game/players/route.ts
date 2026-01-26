@@ -4,6 +4,7 @@ import {
   updatePlayerPseudo,
   deleteGameSession,
 } from "@/lib/game-sessions";
+import { validatePseudo, getErrorMessage } from "@/lib/pseudo-validator";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -72,6 +73,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Validation du pseudo (mots inappropriés, XSS, caractères spéciaux)
+    const validation = validatePseudo(pseudo);
+    if (!validation.isValid) {
+      const errorMessage = validation.errors
+        .map((err) => getErrorMessage(err, "fr"))
+        .join(", ");
+      console.log(`[VALIDATION] Pseudo rejeté: "${pseudo}" - Raisons: ${validation.errors.join(", ")}`);
+      return NextResponse.json(
+        { error: errorMessage, codes: validation.errors },
+        { status: 400, headers: corsHeaders }
+      );
+    }
+
+    // Utiliser le pseudo sanitisé
+    const safePseudo = validation.sanitizedPseudo;
+
     const session = await getGameSession(sessionId);
 
     if (!session) {
@@ -84,11 +101,11 @@ export async function POST(request: NextRequest) {
     // Vérifier le token et mettre à jour le pseudo
     let updatedSession;
     if (session.player1.token === playerToken) {
-      updatedSession = await updatePlayerPseudo(sessionId, 1, pseudo.trim());
-      console.log(`Joueur 1 a rejoint: ${pseudo}`);
+      updatedSession = await updatePlayerPseudo(sessionId, 1, safePseudo);
+      console.log(`Joueur 1 a rejoint: ${safePseudo}`);
     } else if (session.player2.token === playerToken) {
-      updatedSession = await updatePlayerPseudo(sessionId, 2, pseudo.trim());
-      console.log(`Joueur 2 a rejoint: ${pseudo}`);
+      updatedSession = await updatePlayerPseudo(sessionId, 2, safePseudo);
+      console.log(`Joueur 2 a rejoint: ${safePseudo}`);
     } else {
       return NextResponse.json(
         { error: "Token invalide" },
