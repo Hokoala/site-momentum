@@ -12,7 +12,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
   ArrowRight,
-  Maximize2,
   Disc,
   ArrowUpRight,
   PlayCircle,
@@ -108,8 +107,7 @@ export default function Home() {
           {/* Content */}
           <div className="relative z-20 w-full h-full flex flex-col justify-between p-6 md:p-12 pt-20 md:pt-32">
             <div className="w-full flex justify-between items-start">
-              <div></div>
-              <Maximize2 className="w-6 h-6 text-white/30" />
+              <div className="w-6 h-6"></div>
             </div>
 
             <div className="flex flex-col items-start max-w-7xl">
@@ -366,15 +364,7 @@ export default function Home() {
             <span>System Status: Stable</span>
           </div>
         </section>
-
-        <style jsx global>{`
-          .stroke-text {
-            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
-          }
-          .text-stroke {
-            -webkit-text-stroke: 1px currentColor;
-          }
-        `}</style>
+        <style jsx global></style>
       </main>
     </>
   );
