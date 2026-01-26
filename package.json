@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@2toad/profanity": "^3.2.0",
     "@heroui/react": "^2.8.5",
     "@prisma/client": "^6.19.1",
     "@prisma/driver-adapter-utils": "^7.1.0",
