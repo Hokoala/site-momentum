@@ -26,10 +26,22 @@ export async function POST(
     return NextResponse.json({ error: "session-full" }, { status: 400 });
   }
 
-  await prisma.gameSession.update({
-    where: { id: gs.id },
-    data: { player2Pseudo: pseudo },
+  const updateResult = await prisma.gameSession.updateMany({
+    where: {
+      id: gs.id,
+      status: "waiting",
+      player2Joined: false,
+    },
+    data: {
+      player2Pseudo: pseudo,
+      player2Joined: true,
+    },
   });
+
+  if (updateResult.count === 0) {
+    // Lost the race — another request claimed the slot first
+    return NextResponse.json({ error: "session-full" }, { status: 409 });
+  }
 
   return NextResponse.json({
     sessionId: gs.sessionId,
