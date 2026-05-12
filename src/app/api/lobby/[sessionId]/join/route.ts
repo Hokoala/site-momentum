@@ -1,19 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+
+function validatePseudo(input: unknown): string | null {
+  if (typeof input !== "string") return null;
+  const trimmed = input.trim();
+  if (trimmed.length < 1 || trimmed.length > 24) return null;
+  return trimmed;
+}
 
 export async function POST(
   req: NextRequest,
   ctx: { params: Promise<{ sessionId: string }> }
 ) {
   const { sessionId } = await ctx.params;
-  const session = await auth.api.getSession({ headers: req.headers });
-  if (!session) {
-    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
-  }
 
   const body = await req.json().catch(() => ({}));
-  const pseudo: string = (body?.pseudo ?? session.user.name ?? "Player2").toString().slice(0, 24);
+  const pseudo = validatePseudo(body?.pseudo);
+  if (!pseudo) {
+    return NextResponse.json({ error: "invalid-pseudo" }, { status: 400 });
+  }
 
   const gs = await prisma.gameSession.findUnique({ where: { sessionId } });
   if (!gs) {
@@ -39,7 +44,6 @@ export async function POST(
   });
 
   if (updateResult.count === 0) {
-    // Lost the race — another request claimed the slot first
     return NextResponse.json({ error: "session-full" }, { status: 409 });
   }
 

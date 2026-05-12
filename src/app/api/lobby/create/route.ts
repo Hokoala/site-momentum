@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { randomBytes } from "crypto";
 
@@ -11,14 +10,19 @@ function generateToken(): string {
   return randomBytes(32).toString("hex");
 }
 
-export async function POST(req: NextRequest) {
-  const session = await auth.api.getSession({ headers: req.headers });
-  if (!session) {
-    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
-  }
+function validatePseudo(input: unknown): string | null {
+  if (typeof input !== "string") return null;
+  const trimmed = input.trim();
+  if (trimmed.length < 1 || trimmed.length > 24) return null;
+  return trimmed;
+}
 
+export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => ({}));
-  const pseudo: string = (body?.pseudo ?? session.user.name ?? "Player1").toString().slice(0, 24);
+  const pseudo = validatePseudo(body?.pseudo);
+  if (!pseudo) {
+    return NextResponse.json({ error: "invalid-pseudo" }, { status: 400 });
+  }
 
   const gameSession = await prisma.gameSession.create({
     data: {
@@ -27,7 +31,7 @@ export async function POST(req: NextRequest) {
       player2Token: generateToken(),
       player1Pseudo: pseudo,
       status: "waiting",
-      expiresAt: new Date(Date.now() + 60 * 60 * 1000), // 1 hour
+      expiresAt: new Date(Date.now() + 60 * 60 * 1000),
     },
   });
 
