@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Momentum — Build manquant</title>
+    <style>
+      body {
+        background: #000;
+        color: #C0FE04;
+        font-family: monospace;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+        padding: 2rem;
+        text-align: center;
+      }
+      pre {
+        white-space: pre-wrap;
+        max-width: 800px;
+      }
+    </style>
+  </head>
+  <body>
+    <pre>Build WebGL Unity manquant.
+
+Pour générer le build :
+1. Ouvrir Unity Editor (le projet momentum-game-v2)
+2. Menu : Momentum → Build Mode → Set WEB_BUILD
+3. File → Build Settings → WebGL → Build
+4. Choisir un dossier de sortie
+5. Copier le contenu dans /public/webgl/ via :
+   ./scripts/copy-webgl-build.sh &lt;dossier-de-sortie&gt;
+    </pre>
+  </body>
+</html>

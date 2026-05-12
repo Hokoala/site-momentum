@@ -17,6 +17,54 @@ const nextConfig: NextConfig = {
     });
     return config;
   },
+  async headers() {
+    return [
+      // Gzip-compressed Unity WebGL files
+      {
+        source: "/webgl/Build/:path*.js.gz",
+        headers: [
+          { key: "Content-Encoding", value: "gzip" },
+          { key: "Content-Type", value: "application/javascript" },
+        ],
+      },
+      {
+        source: "/webgl/Build/:path*.wasm.gz",
+        headers: [
+          { key: "Content-Encoding", value: "gzip" },
+          { key: "Content-Type", value: "application/wasm" },
+        ],
+      },
+      {
+        source: "/webgl/Build/:path*.data.gz",
+        headers: [
+          { key: "Content-Encoding", value: "gzip" },
+          { key: "Content-Type", value: "application/octet-stream" },
+        ],
+      },
+      // Brotli-compressed
+      {
+        source: "/webgl/Build/:path*.js.br",
+        headers: [
+          { key: "Content-Encoding", value: "br" },
+          { key: "Content-Type", value: "application/javascript" },
+        ],
+      },
+      {
+        source: "/webgl/Build/:path*.wasm.br",
+        headers: [
+          { key: "Content-Encoding", value: "br" },
+          { key: "Content-Type", value: "application/wasm" },
+        ],
+      },
+      {
+        source: "/webgl/Build/:path*.data.br",
+        headers: [
+          { key: "Content-Encoding", value: "br" },
+          { key: "Content-Type", value: "application/octet-stream" },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

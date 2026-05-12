@@ -47,3 +47,12 @@ next-env.d.ts
 
 
 /src/generated/prisma
+
+# Unity WebGL build (deployed separately — keep only placeholder)
+/public/webgl/Build/
+/public/webgl/TemplateData/
+/public/webgl/*.data
+/public/webgl/*.wasm
+/public/webgl/*.js
+/public/webgl/*.gz
+/public/webgl/*.br
