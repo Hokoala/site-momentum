@@ -1,6 +1,6 @@
 import "./globals.css";
 import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import ConditionalFooter from "@/components/ConditionalFooter";
 import SmoothScroll from "@/components/SmoothScroll";
 import Script from "next/script";
 import type { Metadata, Viewport } from "next";
@@ -42,7 +42,7 @@ export default function RootLayout({
         <SmoothScroll />
         <Header />
         {children}
-        <Footer />
+        <ConditionalFooter />
       </body>
     </html>
   );
