@@ -81,15 +81,39 @@ Déploiement géré par [Dokploy](https://dokploy.com/) — il suit le tag `late
 |---|---|
 | `DATABASE_URL` | Chaîne MySQL Prisma |
 | `NEXT_PUBLIC_URL` | URL publique du site (utilisée pour générer les invitations) |
+| `NEXT_PUBLIC_COLYSEUS_URL` | URL WebSocket du serveur Colyseus (ex: `wss://momentum-server.mmi23f03.fr`). Si vide, Unity retombe sur `ws://localhost:2567`. |
 | `BETTER_AUTH_SECRET` · `BETTER_AUTH_URL` | Better Auth |
 | Autres | voir `.env.example` |
 
 ## Mise à jour du build Unity
 
-Le build Unity WebGL réside sous `public/webgl/`. Pour le rafraîchir :
+Le build Unity WebGL réside sous `public/webgl/`. Seuls `index.html` et `StreamingAssets/` sont commités ; les binaires lourds (`Build/webgl.data` ≈ 114 Mo, `webgl.wasm` ≈ 35 Mo) sont exclus par `.gitignore` car ils dépassent la limite GitHub de 100 Mo par fichier.
+
+### En local
 
 ```bash
-# Depuis Unity: File → Build Settings → Build vers le dossier de votre choix
-# Puis copier le contenu dans public/webgl/
+# Depuis Unity: File → Build Settings → Build vers public/webgl/
 # Le next.config.ts gère déjà les headers Content-Encoding pour les fichiers gz/br
 ```
+
+### En production (Dokploy + Nixpacks)
+
+Les fichiers `Build/*` sont uploadés manuellement sur un **volume Docker** monté dans le conteneur, pour qu'ils survivent aux redéploiements Nixpacks.
+
+**Configuration Dokploy** (à faire une fois) :
+
+1. Ouvrir le service `site-momentum` → onglet *Advanced* → *Volumes*
+2. Ajouter un volume :
+   - Type : *Bind Mount* (ou *Volume*)
+   - Host path : `/var/dokploy/momentum/webgl-build`
+   - Container path : `/app/public/webgl/Build`
+3. Redéployer le service.
+
+**Upload des fichiers** (à refaire après chaque build Unity) :
+
+```bash
+# Depuis ta machine, après avoir fait un build Unity → public/webgl/Build/
+scp public/webgl/Build/webgl.* user@dokploy-host:/var/dokploy/momentum/webgl-build/
+```
+
+Pas besoin de redéployer ensuite — Next.js lit directement depuis le volume.
