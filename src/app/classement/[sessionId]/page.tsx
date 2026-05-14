@@ -129,8 +129,8 @@ export default function SessionDetailsPage() {
   };
 
   const getMapInfo = (mapName: string | null) => {
-    if (!mapName) return mapConfig.default;
-    return mapConfig[mapName] || mapConfig.default;
+    if (!mapName) return mapConfig.main;
+    return mapConfig[mapName] || mapConfig.main;
   };
 
   if (loading) {

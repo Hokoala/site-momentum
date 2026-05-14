@@ -70,13 +70,13 @@ export async function GET(request: NextRequest) {
         })),
         total,
       },
-      { headers: corsHeaders }
+      { headers: corsHeaders },
     );
   } catch (error) {
     console.error("Erreur récupération scores:", error);
     return NextResponse.json(
       { success: false, error: "Erreur serveur" },
-      { status: 500, headers: corsHeaders }
+      { status: 500, headers: corsHeaders },
     );
   }
 }
@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
     if (!data.playerName || data.totalScore === undefined) {
       return NextResponse.json(
         { success: false, error: "playerName et totalScore requis" },
-        { status: 400, headers: corsHeaders }
+        { status: 400, headers: corsHeaders },
       );
     }
 
@@ -151,13 +151,13 @@ export async function POST(request: NextRequest) {
         rank,
         totalScores,
       },
-      { headers: corsHeaders }
+      { headers: corsHeaders },
     );
   } catch (error) {
     console.error("❌ Erreur sauvegarde score:", error);
     return NextResponse.json(
       { success: false, error: "Erreur serveur" },
-      { status: 500, headers: corsHeaders }
+      { status: 500, headers: corsHeaders },
     );
   }
 }
