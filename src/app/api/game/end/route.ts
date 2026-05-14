@@ -60,11 +60,18 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Vérifier que la partie est en cours ou déjà terminée (pour permettre le rejeu)
-    if (session.status !== "playing" && session.status !== "finished") {
+    // En multijoueur le flux ne passe jamais par /api/game/start côté client — c'est
+    // le serveur Colyseus qui pousse la session en "playing" via markGameSessionPlaying.
+    // Si pour une raison quelconque ce passage n'a pas eu lieu (process pas redémarré,
+    // race condition, erreur Prisma silencieuse), on refuse d'enregistrer les scores
+    // ici ce qui est plus dommageable que d'accepter une session "waiting" qui s'est
+    // visiblement bien déroulée jusqu'au end-of-match. L'identité de la session est
+    // déjà validée par le findUnique sur sessionId ; le status sert juste à distinguer
+    // les sessions en cours/terminées des sessions explicitement annulées.
+    if (session.status === "cancelled" || session.status === "expired") {
       return NextResponse.json(
         {
-          error: "La partie n'est pas en cours",
+          error: "La partie n'est plus active",
           status: session.status,
         },
         { status: 400, headers: corsHeaders }

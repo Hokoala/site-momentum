@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState, use } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Loader2, Zap } from "lucide-react";
 
@@ -10,25 +10,44 @@ export default function PlayPage({
   params: Promise<{ sessionId: string }>;
 }) {
   const { sessionId } = use(params);
+  const router = useRouter();
   const searchParams = useSearchParams();
   const role = searchParams.get("role"); // "host" or "join"
   const [token, setToken] = useState<string | null>(null);
   const [error, setError] = useState("");
+
+  // Unity → parent bridge: when the player clicks "Quitter" in the WebGL build,
+  // the .jslib helper posts { type: 'momentum-quit', sessionId } and we route
+  // to the recap page that already exists at /classement/[sessionId].
+  useEffect(() => {
+    function onMessage(e: MessageEvent) {
+      if (typeof e.data !== "object" || e.data === null) return;
+      if (e.data.type === "momentum-quit") {
+        const sid = e.data.sessionId || sessionId;
+        router.push(`/classement/${encodeURIComponent(sid)}`);
+      }
+    }
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, [router, sessionId]);
 
   // Joiner pseudo flow
   const [pseudo, setPseudo] = useState("");
   const [joining, setJoining] = useState(false);
 
   useEffect(() => {
-    if (role === "host") {
-      const stored = sessionStorage.getItem(`token-${sessionId}`);
-      if (stored) {
-        setToken(stored);
-      } else {
-        setError("Token manquant — retour au lobby pour recréer la partie");
-      }
+    // The new code-based flow has /game/join acquire the token before
+    // navigating here, so try sessionStorage first regardless of role.
+    const stored = sessionStorage.getItem(`token-${sessionId}`);
+    if (stored) {
+      setToken(stored);
+      return;
     }
-    // for role=join, we wait for the user to submit a pseudo (handled below)
+    if (role === "host") {
+      setError("Token manquant — retour au lobby pour recréer la partie");
+    }
+    // role=join with no token: fall through to the legacy in-page pseudo input
+    // (kept so old QR/URL invites stay functional).
   }, [sessionId, role]);
 
   async function submitJoin() {
@@ -160,7 +179,7 @@ export default function PlayPage({
   return (
     <iframe
       src={iframeSrc}
-      className="w-screen h-screen border-0"
+      className="block w-screen h-[calc(100vh-3.5rem)] md:h-[calc(100vh-4rem)] mt-14 md:mt-16 border-0"
       allow="autoplay; gamepad; fullscreen"
     />
   );

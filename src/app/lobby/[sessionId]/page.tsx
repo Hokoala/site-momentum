@@ -23,11 +23,6 @@ export default function WaitingRoom({
   const [info, setInfo] = useState<StatusResponse | null>(null);
   const [copied, setCopied] = useState(false);
 
-  const inviteUrl =
-    typeof window !== "undefined"
-      ? `${window.location.origin}/play/${sessionId}?role=join`
-      : "";
-
   useEffect(() => {
     let stopped = false;
     const poll = async () => {
@@ -54,8 +49,8 @@ export default function WaitingRoom({
     };
   }, [sessionId, router]);
 
-  function copyInvite() {
-    navigator.clipboard.writeText(inviteUrl);
+  function copyCode() {
+    navigator.clipboard.writeText(sessionId.toUpperCase());
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   }
@@ -79,20 +74,25 @@ export default function WaitingRoom({
         </h1>
 
         <p className="text-white/60 font-mono text-sm mb-6">
-          Partage ce lien avec ton ami pour qu&apos;il rejoigne la partie :
+          Partage ce code avec ton ami pour qu&apos;il rejoigne la partie :
         </p>
 
-        {/* Invite URL box */}
-        <div className="border border-white/20 rounded-lg p-4 mb-8 flex items-center gap-3 bg-white/5">
-          <code className="flex-1 font-mono text-xs text-white/80 break-all">
-            {inviteUrl}
-          </code>
+        {/* Code box — big, copy-friendly */}
+        <div className="border border-[#C0FE04]/30 rounded-lg p-6 mb-8 flex items-center justify-between gap-4 bg-[#C0FE04]/5">
+          <div className="flex-1">
+            <p className="text-[10px] font-mono uppercase tracking-widest text-[#C0FE04] mb-2">
+              CODE DE PARTIE
+            </p>
+            <code className="font-mono text-4xl md:text-5xl font-black tracking-[0.2em] text-white select-all">
+              {sessionId.toUpperCase()}
+            </code>
+          </div>
           <Button
-            onClick={copyInvite}
+            onClick={copyCode}
             variant="outline"
             size="icon"
             className="shrink-0"
-            aria-label="Copier le lien"
+            aria-label="Copier le code"
           >
             {copied ? (
               <Check className="w-4 h-4 text-[#C0FE04]" />
