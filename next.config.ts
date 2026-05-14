@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Produce a self-contained build at .next/standalone so the Docker image
+  // can ship without node_modules. Required by the GHCR workflow.
+  output: 'standalone',
   transpilePackages: ['three', 'postprocessing'],
   images: {
     unoptimized: true,
