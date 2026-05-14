@@ -172,9 +172,11 @@ export default function PlayPage({
     );
   }
 
-  const iframeSrc = `/webgl/index.html?sessionId=${encodeURIComponent(
-    sessionId
-  )}&token=${encodeURIComponent(token)}`;
+  const wsUrl = process.env.NEXT_PUBLIC_COLYSEUS_URL ?? "";
+  const iframeSrc =
+    `/webgl/index.html?sessionId=${encodeURIComponent(sessionId)}` +
+    `&token=${encodeURIComponent(token)}` +
+    (wsUrl ? `&wsUrl=${encodeURIComponent(wsUrl)}` : "");
 
   return (
     <iframe
