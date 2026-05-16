@@ -13,7 +13,7 @@ Momentum est composé de trois dépôts :
 | Composant | Rôle | Repo |
 |---|---|---|
 | **Site web** (ce repo) | Next.js · lobby, partage de code, classement, héberge le build WebGL | — |
-| **Game Server** | Colyseus + Prisma · matchmaking, état partagé, scores | (privé) |
+| **Game Server** (ce repo) | Colyseus + Prisma · matchmaking, état partagé, scores | [AloneDay-91/momentum-server](https://github.com/AloneDay-91/momentum-server) |
 | **Jeu Unity** | Unity 2022.3 WebGL · gameplay | [AloneDay-91/unity-ws501-momentum-v2](https://github.com/AloneDay-91/unity-ws501-momentum-v2) |
 
 Le site et le serveur Colyseus partagent la même base MySQL via Prisma.
