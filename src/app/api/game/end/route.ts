@@ -78,41 +78,41 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Rematch-safe : une session peut rejouer plusieurs parties. On efface les scores
-    // de la session avant de réécrire ceux de la partie qui vient de se terminer, pour
-    // que le classement reflète la dernière partie et non un cumul de doublons.
-    await prisma.score.deleteMany({ where: { gameSessionId: session.id } });
+    // Rematch-safe + concurrency-safe : une session peut rejouer plusieurs parties et
+    // les deux clients POSTent en fin de match quasi simultanément. On efface puis
+    // recrée les scores et on marque la session terminée dans une seule transaction
+    // pour éviter tout entrelacement delete/create entre deux requêtes concurrentes.
+    const [createdScores, updatedSession] = await prisma.$transaction(async (tx) => {
+      await tx.score.deleteMany({ where: { gameSessionId: session.id } });
 
-    // Créer les scores pour chaque joueur
-    const createdScores = await Promise.all(
-      scores.map(async (score) => {
-        const playerName =
-          score.playerNumber === 1
-            ? session.player1Pseudo
-            : session.player2Pseudo;
+      const created = await Promise.all(
+        scores.map(async (score) => {
+          const playerName =
+            score.playerNumber === 1
+              ? session.player1Pseudo
+              : session.player2Pseudo;
 
-        return prisma.score.create({
-          data: {
-            playerName: playerName || `Joueur ${score.playerNumber}`,
-            playerNumber: score.playerNumber,
-            totalScore: score.totalScore,
-            distanceTraveled: score.distanceTraveled || 0,
-            survivalTime: score.survivalTime || 0,
-            collectiblesCollected: score.collectiblesCollected || 0,
-            hasFinished: score.hasFinished || false,
-            gameSessionId: session.id,
-          },
-        });
-      })
-    );
+          return tx.score.create({
+            data: {
+              playerName: playerName || `Joueur ${score.playerNumber}`,
+              playerNumber: score.playerNumber,
+              totalScore: score.totalScore,
+              distanceTraveled: score.distanceTraveled || 0,
+              survivalTime: score.survivalTime || 0,
+              collectiblesCollected: score.collectiblesCollected || 0,
+              hasFinished: score.hasFinished || false,
+              gameSessionId: session.id,
+            },
+          });
+        })
+      );
 
-    // Mettre à jour la session comme terminée
-    const updatedSession = await prisma.gameSession.update({
-      where: { sessionId },
-      data: {
-        status: "finished",
-        finishedAt: new Date(),
-      },
+      const updated = await tx.gameSession.update({
+        where: { sessionId },
+        data: { status: "finished", finishedAt: new Date() },
+      });
+
+      return [created, updated] as const;
     });
 
     console.log(`🏁 Partie terminée: ${sessionId}`);
