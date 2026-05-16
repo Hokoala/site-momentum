@@ -78,6 +78,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Rematch-safe : une session peut rejouer plusieurs parties. On efface les scores
+    // de la session avant de réécrire ceux de la partie qui vient de se terminer, pour
+    // que le classement reflète la dernière partie et non un cumul de doublons.
+    await prisma.score.deleteMany({ where: { gameSessionId: session.id } });
+
     // Créer les scores pour chaque joueur
     const createdScores = await Promise.all(
       scores.map(async (score) => {
